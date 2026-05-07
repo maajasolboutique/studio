@@ -1,0 +1,47 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-electronics",
+      "description": "Modern gadgets and minimalist workspace",
+      "imageUrl": "https://picsum.photos/seed/42/1200/600",
+      "imageHint": "electronics workspace"
+    },
+    {
+      "id": "prod-laptop",
+      "description": "Sleek modern laptop",
+      "imageUrl": "https://picsum.photos/seed/101/600/400",
+      "imageHint": "laptop computer"
+    },
+    {
+      "id": "prod-phone",
+      "description": "Minimalist smartphone",
+      "imageUrl": "https://picsum.photos/seed/102/600/400",
+      "imageHint": "smartphone mobile"
+    },
+    {
+      "id": "prod-watch",
+      "description": "Smart watch on table",
+      "imageUrl": "https://picsum.photos/seed/103/600/400",
+      "imageHint": "smartwatch clock"
+    },
+    {
+      "id": "prod-headphones",
+      "description": "Premium wireless headphones",
+      "imageUrl": "https://picsum.photos/seed/104/600/400",
+      "imageHint": "headphones music"
+    },
+    {
+      "id": "prod-camera",
+      "description": "Professional digital camera",
+      "imageUrl": "https://picsum.photos/seed/105/600/400",
+      "imageHint": "camera photography"
+    },
+    {
+      "id": "prod-tablet",
+      "description": "Modern design tablet",
+      "imageUrl": "https://picsum.photos/seed/106/600/400",
+      "imageHint": "tablet technology"
+    }
+  ]
+}
