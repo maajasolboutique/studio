@@ -1,3 +1,4 @@
+
 {
   "placeholderImages": [
     {
@@ -7,28 +8,148 @@
       "imageHint": "rajputi bride"
     },
     {
-      "id": "poshak1",
-      "description": "Pink hand-embroidered Rajputi poshak",
-      "imageUrl": "https://picsum.photos/seed/pink-poshak/600/800",
+      "id": "poshak-pink",
+      "description": "Royal Pink Rajputi Poshak with Zardosi",
+      "imageUrl": "https://picsum.photos/seed/pink-poshak-1/600/800",
       "imageHint": "pink poshak"
     },
     {
-      "id": "bridal1",
-      "description": "Heavy red bridal lehenga with jewelry",
-      "imageUrl": "https://picsum.photos/seed/bridal-red/600/800",
-      "imageHint": "bridal lehenga"
+      "id": "poshak-red",
+      "description": "Bridal Red Heritage Poshak",
+      "imageUrl": "https://picsum.photos/seed/red-poshak-bridal/600/800",
+      "imageHint": "red poshak"
     },
     {
-      "id": "lehenga1",
-      "description": "Designer yellow lehenga for haldi",
-      "imageUrl": "https://picsum.photos/seed/yellow-lehenga/600/800",
+      "id": "poshak-green",
+      "description": "Emerald Green Satin Poshak",
+      "imageUrl": "https://picsum.photos/seed/green-poshak/600/800",
+      "imageHint": "green poshak"
+    },
+    {
+      "id": "poshak-turquoise",
+      "description": "Turquoise Meenakari Poshak",
+      "imageUrl": "https://picsum.photos/seed/turquoise-poshak/600/800",
+      "imageHint": "blue poshak"
+    },
+    {
+      "id": "poshak-white",
+      "description": "White & Gold Festive Poshak",
+      "imageUrl": "https://picsum.photos/seed/white-gold-poshak/600/800",
+      "imageHint": "white poshak"
+    },
+    {
+      "id": "poshak-blue",
+      "description": "Royal Blue Wedding Poshak",
+      "imageUrl": "https://picsum.photos/seed/royal-blue-poshak/600/800",
+      "imageHint": "blue bridal"
+    },
+    {
+      "id": "poshak-yellow",
+      "description": "Lemon Yellow Designer Poshak",
+      "imageUrl": "https://picsum.photos/seed/yellow-designer-poshak/600/800",
+      "imageHint": "yellow poshak"
+    },
+    {
+      "id": "poshak-bandhej",
+      "description": "Classic Red Bandhej Poshak",
+      "imageUrl": "https://picsum.photos/seed/red-bandhej/600/800",
+      "imageHint": "bandhani poshak"
+    },
+    {
+      "id": "poshak-mint",
+      "description": "Mint Green Bridal Poshak",
+      "imageUrl": "https://picsum.photos/seed/mint-green-bridal/600/800",
+      "imageHint": "mint poshak"
+    },
+    {
+      "id": "lehenga-yellow",
+      "description": "Marigold Yellow Lehenga",
+      "imageUrl": "https://picsum.photos/seed/yellow-lehenga-haldi/600/800",
       "imageHint": "yellow lehenga"
     },
     {
-      "id": "jewel1",
-      "description": "Traditional kundan aad necklace",
-      "imageUrl": "https://picsum.photos/seed/kundan-aad/600/800",
-      "imageHint": "kundan jewelry"
+      "id": "lehenga-gold",
+      "description": "Champagne Gold Reception Lehenga",
+      "imageUrl": "https://picsum.photos/seed/gold-reception-lehenga/600/800",
+      "imageHint": "gold lehenga"
+    },
+    {
+      "id": "lehenga-violet",
+      "description": "Violet & Silver Lehenga",
+      "imageUrl": "https://picsum.photos/seed/violet-lehenga/600/800",
+      "imageHint": "purple lehenga"
+    },
+    {
+      "id": "saree-velvet",
+      "description": "Midnight Blue Velvet Saree",
+      "imageUrl": "https://picsum.photos/seed/blue-velvet-saree/600/800",
+      "imageHint": "velvet saree"
+    },
+    {
+      "id": "saree-peach",
+      "description": "Light Peach Daily Wear Saree",
+      "imageUrl": "https://picsum.photos/seed/peach-chiffon-saree/600/800",
+      "imageHint": "peach saree"
+    },
+    {
+      "id": "saree-ruby",
+      "description": "Ruby Red Party Saree",
+      "imageUrl": "https://picsum.photos/seed/ruby-red-saree/600/800",
+      "imageHint": "red saree"
+    },
+    {
+      "id": "jewel-aad",
+      "description": "Traditional Rajputi Aad",
+      "imageUrl": "https://picsum.photos/seed/rajputi-aad-jewel/600/800",
+      "imageHint": "rajputi jewelry"
+    },
+    {
+      "id": "jewel-bajuband",
+      "description": "Traditional Rajputi Bajuband",
+      "imageUrl": "https://picsum.photos/seed/rajputi-bajuband/600/800",
+      "imageHint": "bajuband"
+    },
+    {
+      "id": "jewel-rakhadi",
+      "description": "Handmade Rajputi Rakhadi",
+      "imageUrl": "https://picsum.photos/seed/rajputi-borla/600/800",
+      "imageHint": "borla"
+    },
+    {
+      "id": "jewel-nath",
+      "description": "Antique Silver Nath",
+      "imageUrl": "https://picsum.photos/seed/rajputi-nath/600/800",
+      "imageHint": "nose ring"
+    },
+    {
+      "id": "kids-pink",
+      "description": "Baby Pink Kids Poshak",
+      "imageUrl": "https://picsum.photos/seed/kids-pink-poshak/600/800",
+      "imageHint": "kids ethnic"
+    },
+    {
+      "id": "kids-zari",
+      "description": "Pink Zari Work Kids Lehenga",
+      "imageUrl": "https://picsum.photos/seed/kids-zari-lehenga/600/800",
+      "imageHint": "kids lehenga"
+    },
+    {
+      "id": "dup-gold",
+      "description": "Golden Handcrafted Odhni",
+      "imageUrl": "https://picsum.photos/seed/gold-odhni/600/800",
+      "imageHint": "gold dupatta"
+    },
+    {
+      "id": "dup-heavy",
+      "description": "Heavy Designer Rajputi Odhni",
+      "imageUrl": "https://picsum.photos/seed/heavy-jaal-odhni/600/800",
+      "imageHint": "heavy dupatta"
+    },
+    {
+      "id": "dup-black",
+      "description": "Black Shimmer Rajputi Odhni",
+      "imageUrl": "https://picsum.photos/seed/black-shimmer-odhni/600/800",
+      "imageHint": "black dupatta"
     }
   ]
 }

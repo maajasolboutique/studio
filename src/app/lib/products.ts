@@ -1,3 +1,4 @@
+
 export interface Product {
   id: string;
   name: string;
@@ -22,7 +23,7 @@ export const products: Product[] = [
     price: 14999,
     discountPrice: 12999,
     category: "Rajputi Poshak",
-    image: "https://picsum.photos/seed/poshak1/600/800",
+    image: "https://picsum.photos/seed/pink-poshak-1/600/800",
     stockStatus: 'In Stock',
     fabric: "Pure Satin Silk",
     isHot: true,
@@ -40,7 +41,7 @@ export const products: Product[] = [
     price: 24999,
     discountPrice: 19999,
     category: "Bridal Wear",
-    image: "https://picsum.photos/seed/poshak2/600/800",
+    image: "https://picsum.photos/seed/red-poshak-bridal/600/800",
     stockStatus: 'Limited Stock',
     fabric: "Thakurji Pure Georgette",
     isNew: true,
@@ -56,7 +57,7 @@ export const products: Product[] = [
     description: "Bright and vibrant lehenga with contemporary motifs, ideal for haldi or festival celebrations.",
     price: 8999,
     category: "Lehenga",
-    image: "https://picsum.photos/seed/lehenga1/600/800",
+    image: "https://picsum.photos/seed/yellow-lehenga-haldi/600/800",
     stockStatus: 'In Stock',
     fabric: "Semi-Pure Crepe",
     specs: {
@@ -70,7 +71,7 @@ export const products: Product[] = [
     description: "Classic satin poshak with elegant silver embroidery. Comfortable and regal.",
     price: 11999,
     category: "Rajputi Poshak",
-    image: "https://picsum.photos/seed/poshak3/600/800",
+    image: "https://picsum.photos/seed/green-poshak/600/800",
     stockStatus: 'In Stock',
     fabric: "Satin",
     specs: {
@@ -84,7 +85,7 @@ export const products: Product[] = [
     description: "Premium handcrafted odhni with heavy borders and fine sequence work.",
     price: 3499,
     category: "Dupatta",
-    image: "https://picsum.photos/seed/dup1/600/800",
+    image: "https://picsum.photos/seed/gold-odhni/600/800",
     stockStatus: 'In Stock',
     fabric: "Chiffon",
     specs: {
@@ -98,7 +99,7 @@ export const products: Product[] = [
     description: "Adorable traditional poshak for little princesses. Light weight and skin friendly.",
     price: 2999,
     category: "Kids Rajputi Wear",
-    image: "https://picsum.photos/seed/kids1/600/800",
+    image: "https://picsum.photos/seed/kids-pink-poshak/600/800",
     stockStatus: 'In Stock',
     fabric: "Cotton Silk",
     specs: {
@@ -112,7 +113,7 @@ export const products: Product[] = [
     description: "Luxurious velvet saree with antique gold border. Perfect for evening royal parties.",
     price: 7499,
     category: "Saree",
-    image: "https://picsum.photos/seed/saree1/600/800",
+    image: "https://picsum.photos/seed/blue-velvet-saree/600/800",
     stockStatus: 'In Stock',
     fabric: "Micro Velvet",
     isHot: true,
@@ -127,7 +128,7 @@ export const products: Product[] = [
     description: "Traditional Rajputi Aad set with matching earrings. 22K Gold plated with kundan stones.",
     price: 5999,
     category: "Jewellery",
-    image: "https://picsum.photos/seed/jewel1/600/800",
+    image: "https://picsum.photos/seed/rajputi-aad-jewel/600/800",
     stockStatus: 'In Stock',
     fabric: "Alloy / Gold Plated",
     specs: {
@@ -141,7 +142,7 @@ export const products: Product[] = [
     description: "Unique turquoise poshak featuring delicate meenakari patterns and floral embroidery.",
     price: 13500,
     category: "Rajputi Poshak",
-    image: "https://picsum.photos/seed/poshak4/600/800",
+    image: "https://picsum.photos/seed/turquoise-poshak/600/800",
     stockStatus: 'In Stock',
     fabric: "Pure Satin",
     specs: {
@@ -155,7 +156,7 @@ export const products: Product[] = [
     description: "Glittering gold lehenga for modern royalty. Fusion of traditional and contemporary design.",
     price: 18999,
     category: "Lehenga",
-    image: "https://picsum.photos/seed/lehenga2/600/800",
+    image: "https://picsum.photos/seed/gold-reception-lehenga/600/800",
     stockStatus: 'Limited Stock',
     fabric: "Silk Blend",
     isNew: true,
@@ -170,7 +171,7 @@ export const products: Product[] = [
     description: "Classic Bajuband with red and green stones. Essential Rajputi accessory.",
     price: 2199,
     category: "Jewellery",
-    image: "https://picsum.photos/seed/jewel2/600/800",
+    image: "https://picsum.photos/seed/rajputi-bajuband/600/800",
     stockStatus: 'In Stock',
     fabric: "Gold Plated",
     specs: {
@@ -184,7 +185,7 @@ export const products: Product[] = [
     description: "Elegant white satin poshak with rich gold embroidery. Subtle and sophisticated.",
     price: 9999,
     category: "Rajputi Poshak",
-    image: "https://picsum.photos/seed/poshak5/600/800",
+    image: "https://picsum.photos/seed/white-gold-poshak/600/800",
     stockStatus: 'In Stock',
     fabric: "Satin Silk",
     specs: {
@@ -198,7 +199,7 @@ export const products: Product[] = [
     description: "Odhni with heavy jaal work and scalloped borders. Multi-color embroidery.",
     price: 4999,
     category: "Dupatta",
-    image: "https://picsum.photos/seed/dup2/600/800",
+    image: "https://picsum.photos/seed/heavy-jaal-odhni/600/800",
     stockStatus: 'In Stock',
     fabric: "Thakurji Pure",
     specs: {
@@ -212,7 +213,7 @@ export const products: Product[] = [
     description: "Heavy wedding collection in royal blue. Intricate patterns and heavy dori work.",
     price: 21000,
     category: "Bridal Wear",
-    image: "https://picsum.photos/seed/poshak6/600/800",
+    image: "https://picsum.photos/seed/royal-blue-poshak/600/800",
     stockStatus: 'Limited Stock',
     fabric: "Pure Crepe",
     specs: {
@@ -226,7 +227,7 @@ export const products: Product[] = [
     description: "Simple yet elegant chiffon saree for daily boutique style. Breathable and chic.",
     price: 1999,
     category: "Saree",
-    image: "https://picsum.photos/seed/saree2/600/800",
+    image: "https://picsum.photos/seed/peach-chiffon-saree/600/800",
     stockStatus: 'In Stock',
     fabric: "Chiffon",
     specs: {
@@ -240,7 +241,7 @@ export const products: Product[] = [
     description: "Traditional borla style rakhadi. Hand-set stones with gold plating.",
     price: 1599,
     category: "Jewellery",
-    image: "https://picsum.photos/seed/jewel3/600/800",
+    image: "https://picsum.photos/seed/rajputi-borla/600/800",
     stockStatus: 'In Stock',
     fabric: "Alloy",
     specs: {
@@ -254,7 +255,7 @@ export const products: Product[] = [
     description: "Exquisite violet lehenga with silver gota-patti. A head-turner at any festival.",
     price: 10500,
     category: "Lehenga",
-    image: "https://picsum.photos/seed/lehenga3/600/800",
+    image: "https://picsum.photos/seed/violet-lehenga/600/800",
     stockStatus: 'In Stock',
     fabric: "Raw Silk",
     specs: {
@@ -268,7 +269,7 @@ export const products: Product[] = [
     description: "Traditional Bandhej pattern with modern cut. Very popular choice for Teej.",
     price: 8500,
     category: "Rajputi Poshak",
-    image: "https://picsum.photos/seed/poshak7/600/800",
+    image: "https://picsum.photos/seed/red-bandhej/600/800",
     stockStatus: 'In Stock',
     fabric: "Georgette",
     specs: {
@@ -282,7 +283,7 @@ export const products: Product[] = [
     description: "Refreshing mint green poshak for a modern bride. Full heavy work on ghagra.",
     price: 27500,
     category: "Bridal Wear",
-    image: "https://picsum.photos/seed/poshak8/600/800",
+    image: "https://picsum.photos/seed/mint-green-bridal/600/800",
     stockStatus: 'Out of Stock',
     fabric: "Thakurji Pure",
     specs: {
@@ -296,7 +297,7 @@ export const products: Product[] = [
     description: "Festive lehenga for girls. Soft lining for maximum comfort.",
     price: 3499,
     category: "Kids Rajputi Wear",
-    image: "https://picsum.photos/seed/kids2/600/800",
+    image: "https://picsum.photos/seed/kids-zari-lehenga/600/800",
     stockStatus: 'In Stock',
     fabric: "Art Silk",
     specs: {
@@ -310,7 +311,7 @@ export const products: Product[] = [
     description: "Elegant Rajputi Nath with pearl and red stone accents. Silver finish.",
     price: 899,
     category: "Jewellery",
-    image: "https://picsum.photos/seed/jewel4/600/800",
+    image: "https://picsum.photos/seed/rajputi-nath/600/800",
     stockStatus: 'In Stock',
     fabric: "Oxidized Silver",
     specs: {
@@ -324,7 +325,7 @@ export const products: Product[] = [
     description: "Stunning georgette saree with heavy sequence work blouse. Shahi andaz.",
     price: 4999,
     category: "Saree",
-    image: "https://picsum.photos/seed/saree3/600/800",
+    image: "https://picsum.photos/seed/ruby-red-saree/600/800",
     stockStatus: 'In Stock',
     fabric: "Georgette",
     specs: {
@@ -338,7 +339,7 @@ export const products: Product[] = [
     description: "Pastel collection poshak. Light-weight work, suitable for summer weddings.",
     price: 11500,
     category: "Rajputi Poshak",
-    image: "https://picsum.photos/seed/poshak9/600/800",
+    image: "https://picsum.photos/seed/yellow-designer-poshak/600/800",
     stockStatus: 'In Stock',
     fabric: "Satin Silk",
     specs: {
@@ -352,7 +353,7 @@ export const products: Product[] = [
     description: "Unique black odhni with golden shimmer. High-fashion traditional wear.",
     price: 2899,
     category: "Dupatta",
-    image: "https://picsum.photos/seed/dup3/600/800",
+    image: "https://picsum.photos/seed/black-shimmer-odhni/600/800",
     stockStatus: 'In Stock',
     fabric: "Net with Shimmer",
     specs: {
@@ -366,7 +367,7 @@ export const products: Product[] = [
     description: "Set of 2 bajubands. Authentic Rajasthani design with loom strings.",
     price: 3800,
     category: "Jewellery",
-    image: "https://picsum.photos/seed/jewel5/600/800",
+    image: "https://picsum.photos/seed/rajputi-bajuband/600/800",
     stockStatus: 'In Stock',
     fabric: "Gold Plated Copper",
     specs: {
