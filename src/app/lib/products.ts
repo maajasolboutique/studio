@@ -1,93 +1,377 @@
-
 export interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
+  discountPrice?: number;
   category: string;
   image: string;
+  images?: string[];
   specs?: Record<string, string>;
+  isHot?: boolean;
+  isNew?: boolean;
+  stockStatus: 'In Stock' | 'Limited Stock' | 'Out of Stock';
+  fabric: string;
 }
 
 export const products: Product[] = [
   {
-    id: "prod-1",
-    name: "FlowBook Pro",
-    description: "The ultimate laptop for high-performance creative workflows and coding enthusiasts.",
-    price: 1299.99,
-    category: "Laptops",
-    image: "https://picsum.photos/seed/101/600/400",
+    id: "jp-1",
+    name: "Royal Pink Rajputi Poshak",
+    description: "Exquisite hand-worked poshak with heavy Zardosi work, perfect for weddings and royal gatherings.",
+    price: 14999,
+    discountPrice: 12999,
+    category: "Rajputi Poshak",
+    image: "https://picsum.photos/seed/poshak1/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Pure Satin Silk",
+    isHot: true,
     specs: {
-      "Processor": "M2 Pro Chip",
-      "RAM": "16GB Unified Memory",
-      "Storage": "512GB SSD",
-      "Display": "14-inch Liquid Retina"
+      "Work": "Hand Zardosi",
+      "Style": "Traditional Rajputi",
+      "Color": "Royal Pink",
+      "Delivery": "7-10 Days"
     }
   },
   {
-    id: "prod-2",
-    name: "AuraPhone 15",
-    description: "A sleek, minimalist smartphone featuring our most advanced camera system and crystal clear display.",
-    price: 899.00,
-    category: "Phones",
-    image: "https://picsum.photos/seed/102/600/400",
+    id: "jp-2",
+    name: "Bridal Red Heritage Poshak",
+    description: "The quintessential bridal attire for a Rajputi wedding. Heavy Gota-Patti and stone work.",
+    price: 24999,
+    discountPrice: 19999,
+    category: "Bridal Wear",
+    image: "https://picsum.photos/seed/poshak2/600/800",
+    stockStatus: 'Limited Stock',
+    fabric: "Thakurji Pure Georgette",
+    isNew: true,
     specs: {
-      "Camera": "48MP Main",
-      "Battery": "All-day life",
-      "Security": "Face ID",
-      "Connectivity": "5G Ready"
+      "Work": "Stone & Gota Patti",
+      "Occasion": "Bridal / Wedding",
+      "Wash": "Dry Clean Only"
     }
   },
   {
-    id: "prod-3",
-    name: "Horizon Watch X",
-    description: "Stay connected and track your health with precision in a beautiful, titanium casing.",
-    price: 399.00,
-    category: "Wearables",
-    image: "https://picsum.photos/seed/103/600/400",
+    id: "jp-3",
+    name: "Marigold Yellow Lehenga",
+    description: "Bright and vibrant lehenga with contemporary motifs, ideal for haldi or festival celebrations.",
+    price: 8999,
+    category: "Lehenga",
+    image: "https://picsum.photos/seed/lehenga1/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Semi-Pure Crepe",
     specs: {
-      "Sensors": "ECG, Blood Oxygen",
-      "Durability": "Water resistant 50m",
-      "GPS": "Dual-frequency"
+      "Style": "A-Line",
+      "Color": "Mustard Yellow"
     }
   },
   {
-    id: "prod-4",
-    name: "ZenSound Wireless",
-    description: "Immerse yourself in pure, high-fidelity sound with active noise cancellation and spatial audio.",
-    price: 249.50,
-    category: "Audio",
-    image: "https://picsum.photos/seed/104/600/400",
+    id: "jp-4",
+    name: "Emerald Green Satin Poshak",
+    description: "Classic satin poshak with elegant silver embroidery. Comfortable and regal.",
+    price: 11999,
+    category: "Rajputi Poshak",
+    image: "https://picsum.photos/seed/poshak3/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Satin",
     specs: {
-      "Battery": "Up to 40 hours",
-      "Cancellation": "Active Hybrid ANC",
-      "Bluetooth": "5.3"
+      "Work": "Silver Tilla",
+      "Color": "Emerald Green"
     }
   },
   {
-    id: "prod-5",
-    name: "FocusCam D7",
-    description: "Capture professional-grade photos and videos with our latest full-frame mirrorless camera.",
-    price: 1800.00,
-    category: "Cameras",
-    image: "https://picsum.photos/seed/105/600/400",
+    id: "jp-5",
+    name: "Golden Handcrafted Odhni",
+    description: "Premium handcrafted odhni with heavy borders and fine sequence work.",
+    price: 3499,
+    category: "Dupatta",
+    image: "https://picsum.photos/seed/dup1/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Chiffon",
     specs: {
-      "Sensor": "33MP Full-frame",
-      "Video": "4K 60p",
-      "Focus": "Real-time Tracking"
+      "Length": "2.5 Meters",
+      "Work": "Kiran & Border Work"
     }
   },
   {
-    id: "prod-6",
-    name: "Canvas Tab Ultra",
-    description: "The most versatile tablet for artists and students alike, with precision stylus support.",
-    price: 649.00,
-    category: "Tablets",
-    image: "https://picsum.photos/seed/106/600/400",
+    id: "jp-6",
+    name: "Baby Pink Kids Poshak",
+    description: "Adorable traditional poshak for little princesses. Light weight and skin friendly.",
+    price: 2999,
+    category: "Kids Rajputi Wear",
+    image: "https://picsum.photos/seed/kids1/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Cotton Silk",
     specs: {
-      "Display": "12.9-inch XDR",
-      "Chip": "M1 Performance",
-      "Accessories": "Pencil Support"
+      "Age Group": "2-12 Years",
+      "Comfort": "High"
+    }
+  },
+  {
+    id: "jp-7",
+    name: "Midnight Blue Velvet Saree",
+    description: "Luxurious velvet saree with antique gold border. Perfect for evening royal parties.",
+    price: 7499,
+    category: "Saree",
+    image: "https://picsum.photos/seed/saree1/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Micro Velvet",
+    isHot: true,
+    specs: {
+      "Border": "Zari Work",
+      "Color": "Midnight Blue"
+    }
+  },
+  {
+    id: "jp-8",
+    name: "Temple Style Aad Jewellery",
+    description: "Traditional Rajputi Aad set with matching earrings. 22K Gold plated with kundan stones.",
+    price: 5999,
+    category: "Jewellery",
+    image: "https://picsum.photos/seed/jewel1/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Alloy / Gold Plated",
+    specs: {
+      "Type": "Necklace Set",
+      "Style": "Rajasthani Aad"
+    }
+  },
+  {
+    id: "jp-9",
+    name: "Turquoise Meenakari Poshak",
+    description: "Unique turquoise poshak featuring delicate meenakari patterns and floral embroidery.",
+    price: 13500,
+    category: "Rajputi Poshak",
+    image: "https://picsum.photos/seed/poshak4/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Pure Satin",
+    specs: {
+      "Work": "Meenakari",
+      "Color": "Turquoise"
+    }
+  },
+  {
+    id: "jp-10",
+    name: "Champagne Gold Reception Lehenga",
+    description: "Glittering gold lehenga for modern royalty. Fusion of traditional and contemporary design.",
+    price: 18999,
+    category: "Lehenga",
+    image: "https://picsum.photos/seed/lehenga2/600/800",
+    stockStatus: 'Limited Stock',
+    fabric: "Silk Blend",
+    isNew: true,
+    specs: {
+      "Occasion": "Reception / Engagement",
+      "Work": "Sequence & Pearl"
+    }
+  },
+  {
+    id: "jp-11",
+    name: "Traditional Rajputi Bajuband",
+    description: "Classic Bajuband with red and green stones. Essential Rajputi accessory.",
+    price: 2199,
+    category: "Jewellery",
+    image: "https://picsum.photos/seed/jewel2/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Gold Plated",
+    specs: {
+      "Type": "Armlet",
+      "Stone": "Kundan & Polki"
+    }
+  },
+  {
+    id: "jp-12",
+    name: "White & Gold Festive Poshak",
+    description: "Elegant white satin poshak with rich gold embroidery. Subtle and sophisticated.",
+    price: 9999,
+    category: "Rajputi Poshak",
+    image: "https://picsum.photos/seed/poshak5/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Satin Silk",
+    specs: {
+      "Color": "Off-White / Gold",
+      "Season": "All Season"
+    }
+  },
+  {
+    id: "jp-13",
+    name: "Heavy Designer Rajputi Odhni",
+    description: "Odhni with heavy jaal work and scalloped borders. Multi-color embroidery.",
+    price: 4999,
+    category: "Dupatta",
+    image: "https://picsum.photos/seed/dup2/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Thakurji Pure",
+    specs: {
+      "Work": "Zari Jaal",
+      "Transparency": "Semi-Sheer"
+    }
+  },
+  {
+    id: "jp-14",
+    name: "Royal Blue Wedding Poshak",
+    description: "Heavy wedding collection in royal blue. Intricate patterns and heavy dori work.",
+    price: 21000,
+    category: "Bridal Wear",
+    image: "https://picsum.photos/seed/poshak6/600/800",
+    stockStatus: 'Limited Stock',
+    fabric: "Pure Crepe",
+    specs: {
+      "Work": "Dori & Kundan",
+      "Color": "Royal Blue"
+    }
+  },
+  {
+    id: "jp-15",
+    name: "Light Peach Daily Wear Saree",
+    description: "Simple yet elegant chiffon saree for daily boutique style. Breathable and chic.",
+    price: 1999,
+    category: "Saree",
+    image: "https://picsum.photos/seed/saree2/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Chiffon",
+    specs: {
+      "Style": "Printed with Border",
+      "Length": "6.3 Meters"
+    }
+  },
+  {
+    id: "jp-16",
+    name: "Handmade Rajputi Rakhadi",
+    description: "Traditional borla style rakhadi. Hand-set stones with gold plating.",
+    price: 1599,
+    category: "Jewellery",
+    image: "https://picsum.photos/seed/jewel3/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Alloy",
+    specs: {
+      "Style": "Borla",
+      "Attachment": "Adjustable String"
+    }
+  },
+  {
+    id: "jp-17",
+    name: "Violet & Silver Lehenga",
+    description: "Exquisite violet lehenga with silver gota-patti. A head-turner at any festival.",
+    price: 10500,
+    category: "Lehenga",
+    image: "https://picsum.photos/seed/lehenga3/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Raw Silk",
+    specs: {
+      "Color": "Deep Violet",
+      "Work": "Gota Patti"
+    }
+  },
+  {
+    id: "jp-18",
+    name: "Classic Red Bandhej Poshak",
+    description: "Traditional Bandhej pattern with modern cut. Very popular choice for Teej.",
+    price: 8500,
+    category: "Rajputi Poshak",
+    image: "https://picsum.photos/seed/poshak7/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Georgette",
+    specs: {
+      "Pattern": "Bandhej",
+      "Occasion": "Festivals"
+    }
+  },
+  {
+    id: "jp-19",
+    name: "Mint Green Bridal Poshak",
+    description: "Refreshing mint green poshak for a modern bride. Full heavy work on ghagra.",
+    price: 27500,
+    category: "Bridal Wear",
+    image: "https://picsum.photos/seed/poshak8/600/800",
+    stockStatus: 'Out of Stock',
+    fabric: "Thakurji Pure",
+    specs: {
+      "Color": "Mint Green",
+      "Weight": "3kg"
+    }
+  },
+  {
+    id: "jp-20",
+    name: "Pink Zari Work Kids Lehenga",
+    description: "Festive lehenga for girls. Soft lining for maximum comfort.",
+    price: 3499,
+    category: "Kids Rajputi Wear",
+    image: "https://picsum.photos/seed/kids2/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Art Silk",
+    specs: {
+      "Size": "Small to Extra Large",
+      "Type": "Semi-Stitched"
+    }
+  },
+  {
+    id: "jp-21",
+    name: "Antique Silver Nath",
+    description: "Elegant Rajputi Nath with pearl and red stone accents. Silver finish.",
+    price: 899,
+    category: "Jewellery",
+    image: "https://picsum.photos/seed/jewel4/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Oxidized Silver",
+    specs: {
+      "Type": "Nose Ring",
+      "Occasion": "Festive"
+    }
+  },
+  {
+    id: "jp-22",
+    name: "Ruby Red Party Saree",
+    description: "Stunning georgette saree with heavy sequence work blouse. Shahi andaz.",
+    price: 4999,
+    category: "Saree",
+    image: "https://picsum.photos/seed/saree3/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Georgette",
+    specs: {
+      "Blouse": "Unstitched Heavy",
+      "Color": "Ruby Red"
+    }
+  },
+  {
+    id: "jp-23",
+    name: "Lemon Yellow Designer Poshak",
+    description: "Pastel collection poshak. Light-weight work, suitable for summer weddings.",
+    price: 11500,
+    category: "Rajputi Poshak",
+    image: "https://picsum.photos/seed/poshak9/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Satin Silk",
+    specs: {
+      "Color": "Lemon Yellow",
+      "Embroidery": "Floral Zari"
+    }
+  },
+  {
+    id: "jp-24",
+    name: "Black Shimmer Rajputi Odhni",
+    description: "Unique black odhni with golden shimmer. High-fashion traditional wear.",
+    price: 2899,
+    category: "Dupatta",
+    image: "https://picsum.photos/seed/dup3/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Net with Shimmer",
+    specs: {
+      "Color": "Black / Gold",
+      "Work": "Kiran Work"
+    }
+  },
+  {
+    id: "jp-25",
+    name: "Traditional Rajputi Bajuband Set",
+    description: "Set of 2 bajubands. Authentic Rajasthani design with loom strings.",
+    price: 3800,
+    category: "Jewellery",
+    image: "https://picsum.photos/seed/jewel5/600/800",
+    stockStatus: 'In Stock',
+    fabric: "Gold Plated Copper",
+    specs: {
+      "Type": "Traditional Armlet",
+      "Count": "Pair of 2"
     }
   }
 ];

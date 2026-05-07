@@ -1,47 +1,34 @@
-
 {
   "placeholderImages": [
     {
-      "id": "hero-electronics",
-      "description": "Modern gadgets and minimalist workspace",
-      "imageUrl": "https://picsum.photos/seed/42/1200/600",
-      "imageHint": "electronics workspace"
+      "id": "hero-rajputi",
+      "description": "Royal Rajputi bride in deep maroon poshak",
+      "imageUrl": "https://picsum.photos/seed/royal-bride/1920/1080",
+      "imageHint": "rajputi bride"
     },
     {
-      "id": "prod-laptop",
-      "description": "Sleek modern laptop",
-      "imageUrl": "https://picsum.photos/seed/101/600/400",
-      "imageHint": "laptop computer"
+      "id": "poshak1",
+      "description": "Pink hand-embroidered Rajputi poshak",
+      "imageUrl": "https://picsum.photos/seed/pink-poshak/600/800",
+      "imageHint": "pink poshak"
     },
     {
-      "id": "prod-phone",
-      "description": "Minimalist smartphone",
-      "imageUrl": "https://picsum.photos/seed/102/600/400",
-      "imageHint": "smartphone mobile"
+      "id": "bridal1",
+      "description": "Heavy red bridal lehenga with jewelry",
+      "imageUrl": "https://picsum.photos/seed/bridal-red/600/800",
+      "imageHint": "bridal lehenga"
     },
     {
-      "id": "prod-watch",
-      "description": "Smart watch on table",
-      "imageUrl": "https://picsum.photos/seed/103/600/400",
-      "imageHint": "smartwatch clock"
+      "id": "lehenga1",
+      "description": "Designer yellow lehenga for haldi",
+      "imageUrl": "https://picsum.photos/seed/yellow-lehenga/600/800",
+      "imageHint": "yellow lehenga"
     },
     {
-      "id": "prod-headphones",
-      "description": "Premium wireless headphones",
-      "imageUrl": "https://picsum.photos/seed/104/600/400",
-      "imageHint": "headphones music"
-    },
-    {
-      "id": "prod-camera",
-      "description": "Professional digital camera",
-      "imageUrl": "https://picsum.photos/seed/105/600/400",
-      "imageHint": "camera photography"
-    },
-    {
-      "id": "prod-tablet",
-      "description": "Modern design tablet",
-      "imageUrl": "https://picsum.photos/seed/106/600/400",
-      "imageHint": "tablet technology"
+      "id": "jewel1",
+      "description": "Traditional kundan aad necklace",
+      "imageUrl": "https://picsum.photos/seed/kundan-aad/600/800",
+      "imageHint": "kundan jewelry"
     }
   ]
 }
