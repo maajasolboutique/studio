@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -10,6 +11,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
@@ -83,6 +85,7 @@ export function Header() {
               <SheetContent className="w-full sm:max-w-md flex flex-col bg-[#FFFBFB]">
                 <SheetHeader>
                   <SheetTitle className="font-headline text-2xl text-accent border-b pb-4">Royal Shopping Bag</SheetTitle>
+                  <SheetDescription className="sr-only">Review the items in your cart before checking out.</SheetDescription>
                 </SheetHeader>
                 <div className="flex-1 overflow-y-auto py-8">
                   {items.length === 0 ? (
@@ -158,6 +161,10 @@ export function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="sr-only">Main Menu</SheetTitle>
+                  <SheetDescription className="sr-only">Explore boutique sections and collections.</SheetDescription>
+                </SheetHeader>
                 <nav className="flex flex-col gap-6 mt-12 text-lg font-bold uppercase tracking-widest text-accent">
                   <Link href="/products" className="hover:text-[#E91E63]">Catalog</Link>
                   <Link href="/products?category=Rajputi Poshak" className="hover:text-[#E91E63]">Poshak</Link>
