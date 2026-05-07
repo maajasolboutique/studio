@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { ShoppingBag, Search, User, Menu, Phone, Heart, Globe } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, Phone, Heart, Globe, Settings } from 'lucide-react';
 import { useCart } from '@/app/context/cart-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,7 +42,9 @@ export function Header() {
             <Link href="/products" className="transition-all hover:text-[#E91E63] hover:scale-105">Catalog</Link>
             <Link href="/products?category=Bridal Wear" className="transition-all hover:text-[#E91E63] hover:scale-105">Bridal</Link>
             <Link href="/stitching" className="transition-all hover:text-[#E91E63] hover:scale-105">Custom Stitching</Link>
-            <Link href="/products?category=Jewellery" className="transition-all hover:text-[#E91E63] hover:scale-105">Jewellery</Link>
+            <Link href="/admin" className="flex items-center gap-1 text-[#D4AF37] transition-all hover:scale-105">
+              <Settings className="h-4 w-4" /> Admin
+            </Link>
           </nav>
         </div>
 
@@ -170,7 +172,7 @@ export function Header() {
                   </SheetTrigger>
                   <SheetContent side="left" className="w-[300px] sm:w-[400px]">
                     <SheetHeader>
-                      <SheetTitle className="sr-only">Main Menu</SheetTitle>
+                      <SheetTitle className="font-headline text-xl">Main Menu</SheetTitle>
                       <SheetDescription className="sr-only">Explore boutique sections and collections.</SheetDescription>
                     </SheetHeader>
                     <nav className="flex flex-col gap-6 mt-12 text-lg font-bold uppercase tracking-widest text-accent">
@@ -178,8 +180,9 @@ export function Header() {
                       <Link href="/products?category=Rajputi Poshak" className="hover:text-[#E91E63]">Poshak</Link>
                       <Link href="/products?category=Bridal Wear" className="hover:text-[#E91E63]">Bridal</Link>
                       <Link href="/stitching" className="hover:text-[#E91E63]">Custom Stitching</Link>
-                      <Link href="/products?category=Jewellery" className="hover:text-[#E91E63]">Jewellery</Link>
-                      <Link href="/products?category=Kids Rajputi Wear" className="hover:text-[#E91E63]">Kids Wear</Link>
+                      <Link href="/admin" className="text-[#D4AF37] hover:text-[#E91E63] flex items-center gap-2">
+                        <Settings className="h-5 w-5" /> Admin Panel
+                      </Link>
                       <div className="pt-8 border-t flex flex-col gap-4">
                         <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Connect With Us</p>
                         <a href="tel:+91XXXXXXXXXX" className="flex items-center gap-3 text-sm hover:text-[#E91E63]">
