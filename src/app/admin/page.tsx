@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -18,7 +19,9 @@ import {
   BarChart3,
   Image as ImageIcon,
   Link as LinkIcon,
-  Loader2
+  Loader2,
+  X,
+  PlusCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -67,9 +70,12 @@ export default function AdminDashboard() {
     price: '',
     fabric: '',
     description: '',
-    image: '',
+    image: '', // Hero image
+    images: [] as string[], // Additional images
     stockStatus: 'In Stock'
   });
+
+  const [tempImageUrl, setTempImageUrl] = useState('');
 
   // Queries for real data
   const productsQuery = useMemoFirebase(() => {
@@ -81,36 +87,47 @@ export default function AdminDashboard() {
 
   const validateImageUrl = (url: string) => {
     if (!url) return false;
-    // Reject tracking/ad links
     if (url.includes('google.com/aclk') || url.includes('doubleclick') || url.includes('ad-services')) {
       return false;
     }
-    // Check for direct image extensions or firebase storage
     const validExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
     const isDirectLink = validExtensions.some(ext => url.toLowerCase().split('?')[0].endsWith(ext));
     const isFirebase = url.includes('firebasestorage.googleapis.com');
+    const isPicsum = url.includes('picsum.photos');
     
-    return isDirectLink || isFirebase;
+    return isDirectLink || isFirebase || isPicsum;
+  };
+
+  const addAdditionalImage = () => {
+    if (tempImageUrl && validateImageUrl(tempImageUrl)) {
+      setNewProduct({
+        ...newProduct,
+        images: [...newProduct.images, tempImageUrl]
+      });
+      setTempImageUrl('');
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Invalid URL",
+        description: "Please provide a valid direct image URL.",
+      });
+    }
+  };
+
+  const removeAdditionalImage = (index: number) => {
+    const updatedImages = [...newProduct.images];
+    updatedImages.splice(index, 1);
+    setNewProduct({ ...newProduct, images: updatedImages });
   };
 
   const handleAddProduct = async () => {
     if (!db) return;
     
-    // Validation
     if (!newProduct.name || !newProduct.price || !newProduct.image) {
       toast({
         variant: "destructive",
         title: "Validation Error",
-        description: "Please fill in all required fields (Name, Price, Image).",
-      });
-      return;
-    }
-
-    if (!validateImageUrl(newProduct.image)) {
-      toast({
-        variant: "destructive",
-        title: "Invalid Image URL",
-        description: "Please enter a valid direct product image URL (e.g., ends in .jpg, .png). Ad links are not allowed.",
+        description: "Please fill in all required fields (Name, Price, Main Image).",
       });
       return;
     }
@@ -118,8 +135,12 @@ export default function AdminDashboard() {
     setIsSubmitting(true);
     
     try {
+      // Final list of images includes the hero image
+      const allImages = [newProduct.image, ...newProduct.images];
+      
       const productData = {
         ...newProduct,
+        images: allImages,
         price: parseFloat(newProduct.price) || 0,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -142,22 +163,15 @@ export default function AdminDashboard() {
         fabric: '',
         description: '',
         image: '',
+        images: [],
         stockStatus: 'In Stock'
       });
     } catch (error: any) {
       console.error("Firestore Error:", error);
-      let errorMessage = "Could not save product. Please verify product details.";
-      
-      if (error.code === 'permission-denied') {
-        errorMessage = "Database permission issue. Please contact support.";
-      } else if (error.message.includes('network')) {
-        errorMessage = "Check your internet connection and try again.";
-      }
-
       toast({
         variant: "destructive",
         title: "Submission Failed",
-        description: errorMessage,
+        description: "Could not save product. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -240,11 +254,12 @@ export default function AdminDashboard() {
                         <Plus className="h-5 w-5" /> Add Collection
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[700px] rounded-[2rem] border-none shadow-2xl overflow-y-auto max-h-[90vh]">
+                    <DialogContent className="sm:max-w-[900px] rounded-[2rem] border-none shadow-2xl overflow-y-auto max-h-[90vh]">
                       <DialogHeader>
                         <DialogTitle className="text-2xl font-headline text-accent">Add New Royal Item</DialogTitle>
-                        <DialogDescription>Enter the details and upload a photo for your new boutique masterpiece.</DialogDescription>
+                        <DialogDescription>Enter the details and upload multiple photos for your new boutique masterpiece.</DialogDescription>
                       </DialogHeader>
+                      
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
                         <div className="space-y-6">
                           <div className="space-y-2">
@@ -257,6 +272,7 @@ export default function AdminDashboard() {
                               className="rounded-xl"
                             />
                           </div>
+                          
                           <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                               <Label htmlFor="price">Price (₹) *</Label>
@@ -288,60 +304,70 @@ export default function AdminDashboard() {
                               </Select>
                             </div>
                           </div>
+
                           <div className="space-y-2">
-                            <Label htmlFor="fabric">Fabric Type</Label>
-                            <Input 
-                              id="fabric" 
-                              placeholder="e.g. Pure Satin" 
-                              value={newProduct.fabric}
-                              onChange={(e) => setNewProduct({...newProduct, fabric: e.target.value})}
-                              className="rounded-xl"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="image">Image URL *</Label>
+                            <Label htmlFor="image">Main Hero Image URL *</Label>
                             <div className="relative">
                               <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                               <Input 
                                 id="image" 
-                                placeholder="https://example.com/photo.jpg" 
+                                placeholder="Main photo link..." 
                                 value={newProduct.image}
                                 onChange={(e) => setNewProduct({...newProduct, image: e.target.value})}
-                                className={`pl-10 rounded-xl ${newProduct.image && !validateImageUrl(newProduct.image) ? 'border-destructive' : ''}`}
+                                className="pl-10 rounded-xl"
                               />
                             </div>
-                            {newProduct.image && !validateImageUrl(newProduct.image) && (
-                              <p className="text-[10px] text-destructive font-bold">Error: Ad links are blocked. Please provide a direct image link.</p>
-                            )}
-                            <p className="text-[10px] text-muted-foreground italic">Paste a direct .jpg, .png, or .webp link.</p>
+                          </div>
+
+                          <div className="space-y-4 pt-4 border-t">
+                            <Label>Additional Gallery Images (3-4 photos)</Label>
+                            <div className="flex gap-2">
+                              <Input 
+                                placeholder="Additional photo link..." 
+                                value={tempImageUrl}
+                                onChange={(e) => setTempImageUrl(e.target.value)}
+                                className="rounded-xl"
+                              />
+                              <Button type="button" variant="outline" onClick={addAdditionalImage} className="rounded-xl">
+                                <PlusCircle className="h-5 w-5" />
+                              </Button>
+                            </div>
+                            
+                            <div className="grid grid-cols-4 gap-2">
+                              {newProduct.images.map((img, idx) => (
+                                <div key={idx} className="relative aspect-square rounded-lg border overflow-hidden group">
+                                  <img src={img} className="w-full h-full object-cover" alt="" />
+                                  <button 
+                                    onClick={() => removeAdditionalImage(idx)}
+                                    className="absolute top-1 right-1 bg-destructive text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
                         
                         <div className="space-y-6">
                           <div className="space-y-2">
-                            <Label>Photo Preview</Label>
-                            <div className="aspect-[3/4] rounded-2xl border-2 border-dashed border-muted flex items-center justify-center overflow-hidden bg-muted/5 group relative">
+                            <Label>Photo Preview (Main)</Label>
+                            <div className="aspect-[3/4] rounded-2xl border-2 border-dashed border-muted flex items-center justify-center overflow-hidden bg-muted/5">
                               {newProduct.image && validateImageUrl(newProduct.image) ? (
                                 <img 
                                   src={newProduct.image} 
                                   alt="Preview" 
-                                  className="w-full h-full object-cover animate-in fade-in zoom-in-95" 
-                                  onError={() => {
-                                    toast({
-                                      variant: "destructive",
-                                      title: "Image Error",
-                                      description: "The provided URL could not be loaded as an image.",
-                                    });
-                                  }}
+                                  className="w-full h-full object-cover" 
                                 />
                               ) : (
-                                <div className="text-center p-6">
-                                  <ImageIcon className="h-12 w-12 text-muted-foreground/30 mx-auto mb-2" />
-                                  <p className="text-xs text-muted-foreground">No valid image preview</p>
+                                <div className="text-center p-6 text-muted-foreground">
+                                  <ImageIcon className="h-12 w-12 mx-auto mb-2 opacity-20" />
+                                  <p className="text-xs">No main image preview</p>
                                 </div>
                               )}
                             </div>
                           </div>
+                          
                           <div className="space-y-2">
                             <Label htmlFor="description">Product Description</Label>
                             <Textarea 
@@ -349,25 +375,19 @@ export default function AdminDashboard() {
                               placeholder="Describe the royal craftsmanship..." 
                               value={newProduct.description}
                               onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                              className="rounded-xl min-h-[80px]"
+                              className="rounded-xl min-h-[100px]"
                             />
                           </div>
                         </div>
                       </div>
+                      
                       <DialogFooter className="pt-4 border-t">
                         <Button 
                           onClick={handleAddProduct} 
                           disabled={!isFormValid || isSubmitting}
-                          className="w-full bg-[#E91E63] hover:bg-[#C2185B] rounded-full h-12 text-lg shadow-lg"
+                          className="w-full bg-[#E91E63] hover:bg-[#C2185B] rounded-full h-12 text-lg"
                         >
-                          {isSubmitting ? (
-                            <>
-                              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                              Adding to Vault...
-                            </>
-                          ) : (
-                            'Save to Collection'
-                          )}
+                          {isSubmitting ? <Loader2 className="animate-spin" /> : 'Save to Collection'}
                         </Button>
                       </DialogFooter>
                     </DialogContent>
@@ -396,7 +416,6 @@ export default function AdminDashboard() {
               </div>
 
               <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
-                {/* Recent Orders Table */}
                 <Card className="xl:col-span-2 border-none shadow-2xl rounded-[3rem] overflow-hidden">
                   <div className="flex flex-row items-center justify-between p-10 border-b bg-white">
                     <h2 className="text-2xl font-headline text-accent font-bold">Latest Royal Orders</h2>
@@ -437,7 +456,6 @@ export default function AdminDashboard() {
                   </CardContent>
                 </Card>
 
-                {/* Performance Widget */}
                 <Card className="border-none shadow-2xl rounded-[3rem] overflow-hidden">
                   <div className="p-10 pb-0">
                     <h2 className="text-2xl font-headline text-accent flex items-center gap-3 font-bold">

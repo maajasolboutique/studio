@@ -1,23 +1,25 @@
 
 "use client";
 
-import { use } from 'react';
+import { use, useState, useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { useCart } from '@/app/context/cart-context';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Heart, ShieldCheck, Truck, RefreshCcw, Star, Loader2 } from 'lucide-react';
+import { ShoppingCart, Heart, ShieldCheck, Truck, RefreshCcw, Star, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { RecommendationList } from '@/components/products/RecommendationList';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { useDoc, useMemoFirebase, useFirestore } from '@/firebase';
 import { doc } from 'firebase/firestore';
+import { cn } from '@/lib/utils';
 
 export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { addToCart } = useCart();
   const { toast } = useToast();
   const db = useFirestore();
+  const [activeImage, setActiveImage] = useState<string>('');
 
   const productRef = useMemoFirebase(() => {
     if (!db || !id) return null;
@@ -25,6 +27,12 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   }, [db, id]);
 
   const { data: product, isLoading } = useDoc(productRef);
+
+  useEffect(() => {
+    if (product?.image) {
+      setActiveImage(product.image);
+    }
+  }, [product]);
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -58,82 +66,132 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     );
   }
 
+  // Combine images array if it exists
+  const allImages = product.images && Array.isArray(product.images) 
+    ? [...new Set([product.image, ...product.images])] 
+    : [product.image];
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       
       <main className="flex-1 container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Gallery */}
-          <div className="space-y-4">
-            <div className="aspect-[3/4] rounded-3xl overflow-hidden border bg-white shadow-xl">
+          {/* Gallery Section */}
+          <div className="space-y-6">
+            <div className="aspect-[3/4] rounded-[2.5rem] overflow-hidden border bg-white shadow-2xl relative group">
               <img 
-                src={product.image} 
+                src={activeImage || product.image} 
                 alt={product.name} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-all duration-500"
               />
+              
+              {/* Navigation Arrows for Mobile-style quick switch */}
+              <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button 
+                  variant="secondary" 
+                  size="icon" 
+                  className="rounded-full bg-white/80"
+                  onClick={() => {
+                    const idx = allImages.indexOf(activeImage);
+                    const prevIdx = idx > 0 ? idx - 1 : allImages.length - 1;
+                    setActiveImage(allImages[prevIdx]);
+                  }}
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  size="icon" 
+                  className="rounded-full bg-white/80"
+                  onClick={() => {
+                    const idx = allImages.indexOf(activeImage);
+                    const nextIdx = idx < allImages.length - 1 ? idx + 1 : 0;
+                    setActiveImage(allImages[nextIdx]);
+                  }}
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              </div>
             </div>
+
+            {/* Thumbnails */}
+            {allImages.length > 1 && (
+              <div className="flex gap-4 overflow-x-auto pb-2 px-1 scrollbar-hide">
+                {allImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImage(img)}
+                    className={cn(
+                      "h-24 w-20 flex-shrink-0 rounded-2xl border-2 overflow-hidden transition-all",
+                      activeImage === img ? "border-[#E91E63] scale-105 shadow-lg" : "border-transparent opacity-60 hover:opacity-100"
+                    )}
+                  >
+                    <img src={img} className="w-full h-full object-cover" alt={`View ${idx + 1}`} />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Info */}
+          {/* Info Section */}
           <div className="flex flex-col space-y-8">
-            <div className="space-y-2">
+            <div className="space-y-4">
               <div className="flex items-center gap-4">
-                <Badge className="bg-accent/10 text-accent border-none font-bold">{product.category}</Badge>
+                <Badge className="bg-accent/10 text-accent border-none font-bold px-4 py-1 rounded-full">{product.category}</Badge>
                 <div className="flex items-center text-sm text-yellow-500">
                   <Star className="h-4 w-4 fill-current" />
                   <Star className="h-4 w-4 fill-current" />
                   <Star className="h-4 w-4 fill-current" />
                   <Star className="h-4 w-4 fill-current" />
                   <Star className="h-4 w-4 fill-current" />
-                  <span className="ml-2 text-muted-foreground">(Verified Purchase)</span>
+                  <span className="ml-2 text-muted-foreground font-medium">(Verified Boutique Piece)</span>
                 </div>
               </div>
-              <h1 className="text-4xl md:text-5xl font-headline font-bold text-accent">{product.name}</h1>
-              <div className="flex items-baseline gap-4 mt-4">
-                <p className="text-3xl font-bold font-headline text-[#E91E63]">₹{product.price.toLocaleString()}</p>
+              <h1 className="text-4xl md:text-6xl font-headline font-bold text-accent leading-tight">{product.name}</h1>
+              <div className="flex items-baseline gap-4 mt-6">
+                <p className="text-4xl font-bold font-headline text-[#E91E63]">₹{product.price.toLocaleString()}</p>
+                <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50">Free Delivery</Badge>
               </div>
             </div>
 
-            <p className="text-lg text-muted-foreground leading-relaxed italic">
+            <div className="p-6 bg-muted/30 rounded-3xl border border-muted-foreground/5 italic text-lg leading-relaxed text-muted-foreground">
               {product.description}
-            </p>
+            </div>
 
-            <div className="space-y-4 pt-6 border-t">
-              <div className="grid grid-cols-1 gap-4">
-                <div className="flex items-center gap-2 text-sm font-bold text-accent">
-                  <span>Fabric:</span>
-                  <span className="text-muted-foreground font-normal">{product.fabric || "Pure Satin / Georgette"}</span>
+            <div className="space-y-6 pt-6 border-t">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-white border shadow-sm">
+                  <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest mb-1">Fabric</p>
+                  <p className="text-accent font-bold">{product.fabric || "Premium Rajputi Satin"}</p>
                 </div>
-                <div className="flex items-center gap-2 text-sm font-bold text-accent">
-                  <span>Status:</span>
-                  <Badge className="bg-green-100 text-green-700 border-none">{product.stockStatus || "In Stock"}</Badge>
+                <div className="p-4 rounded-2xl bg-white border shadow-sm">
+                  <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest mb-1">Stock</p>
+                  <p className="text-green-600 font-bold">{product.stockStatus || "In Stock"}</p>
                 </div>
               </div>
               
               <div className="flex gap-4 pt-4">
-                <Button onClick={handleAddToCart} size="lg" className="flex-1 h-14 text-lg gap-2 bg-[#E91E63] hover:bg-[#C2185B] rounded-full shadow-lg">
-                  <ShoppingCart className="h-5 w-5" /> Add to Shopping Bag
+                <Button onClick={handleAddToCart} size="lg" className="flex-1 h-16 text-xl gap-3 bg-[#E91E63] hover:bg-[#C2185B] rounded-full shadow-2xl transition-all active:scale-95">
+                  <ShoppingCart className="h-6 w-6" /> Add to Shopping Bag
                 </Button>
-                <Button variant="outline" size="icon" className="h-14 w-14 rounded-full border-muted">
-                  <Heart className="h-6 w-6 text-[#E91E63]" />
+                <Button variant="outline" size="icon" className="h-16 w-16 rounded-full border-muted hover:bg-pink-50 hover:border-pink-200 group">
+                  <Heart className="h-7 w-7 text-[#E91E63] group-hover:scale-110 transition-transform" />
                 </Button>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t">
-              <div className="flex flex-col items-center text-center gap-2">
-                <div className="p-3 bg-muted rounded-full"><Truck className="h-5 w-5 text-accent" /></div>
-                <p className="text-xs font-bold">Fast Shipping</p>
-              </div>
-              <div className="flex flex-col items-center text-center gap-2">
-                <div className="p-3 bg-muted rounded-full"><RefreshCcw className="h-5 w-5 text-accent" /></div>
-                <p className="text-xs font-bold">Quality Check</p>
-              </div>
-              <div className="flex flex-col items-center text-center gap-2">
-                <div className="p-3 bg-muted rounded-full"><ShieldCheck className="h-5 w-5 text-accent" /></div>
-                <p className="text-xs font-bold">Secure Payment</p>
-              </div>
+            <div className="grid grid-cols-3 gap-4 pt-8 border-t">
+              {[
+                { icon: Truck, label: 'Express Delivery' },
+                { icon: RefreshCcw, label: 'Quality Tested' },
+                { icon: ShieldCheck, label: 'Royal Guarantee' }
+              ].map((item, idx) => (
+                <div key={idx} className="flex flex-col items-center text-center gap-3">
+                  <div className="p-4 bg-muted/50 rounded-2xl"><item.icon className="h-6 w-6 text-accent" /></div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{item.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
