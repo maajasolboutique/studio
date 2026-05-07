@@ -135,12 +135,8 @@ export default function AdminDashboard() {
     setIsSubmitting(true);
     
     try {
-      // Final list of images includes the hero image
-      const allImages = [newProduct.image, ...newProduct.images];
-      
       const productData = {
         ...newProduct,
-        images: allImages,
         price: parseFloat(newProduct.price) || 0,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -155,7 +151,6 @@ export default function AdminDashboard() {
         description: `${newProduct.name} has been added successfully to your royal collection.`,
       });
       
-      // Reset form
       setNewProduct({
         name: '',
         category: 'Rajputi Poshak',
@@ -191,7 +186,6 @@ export default function AdminDashboard() {
     { id: 'orders', label: 'Orders', icon: ShoppingBag },
     { id: 'stitching', label: 'Stitching', icon: Scissors },
     { id: 'marketing', label: 'Marketing', icon: TicketPercent },
-    { id: 'support', label: 'Support', icon: MessageSquare },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -199,7 +193,6 @@ export default function AdminDashboard() {
     { id: "ORD-9921", customer: "Rajkumari Devi", amount: "₹24,999", status: "Stitching", date: "5 mins ago", items: 2 },
     { id: "ORD-9920", customer: "Anjali Singh", amount: "₹4,499", status: "Shipped", date: "1 hour ago", items: 1 },
     { id: "ORD-9919", customer: "Padma Rathore", amount: "₹18,500", status: "Confirmed", date: "3 hours ago", items: 3 },
-    { id: "ORD-9918", customer: "Kaveri Kanwar", amount: "₹1,999", status: "Delivered", date: "Yesterday", items: 1 },
   ];
 
   const isFormValid = newProduct.name && newProduct.price && validateImageUrl(newProduct.image);
@@ -244,20 +237,20 @@ export default function AdminDashboard() {
             <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                  <h1 className="text-4xl font-headline font-bold text-accent">Royal Analytics</h1>
-                  <p className="text-muted-foreground italic">Overview of your boutique's performance</p>
+                  <h1 className="text-4xl font-headline font-bold text-accent">Royal Dashboard</h1>
+                  <p className="text-muted-foreground italic">बटीक का संपूर्ण विश्लेषण</p>
                 </div>
                 <div className="flex gap-4">
                   <Dialog open={isAddProductOpen} onOpenChange={setIsAddProductOpen}>
                     <DialogTrigger asChild>
-                      <Button className="bg-accent rounded-full h-11 px-6 gap-2">
+                      <Button className="bg-[#E91E63] rounded-full h-11 px-6 gap-2">
                         <Plus className="h-5 w-5" /> Add Collection
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[900px] rounded-[2rem] border-none shadow-2xl overflow-y-auto max-h-[90vh]">
                       <DialogHeader>
                         <DialogTitle className="text-2xl font-headline text-accent">Add New Royal Item</DialogTitle>
-                        <DialogDescription>Enter the details and upload multiple photos for your new boutique masterpiece.</DialogDescription>
+                        <DialogDescription>नया शाही उत्पाद जोड़ें और उसकी फोटो अपलोड करें।</DialogDescription>
                       </DialogHeader>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
@@ -299,19 +292,18 @@ export default function AdminDashboard() {
                                   <SelectItem value="Bridal Wear">Bridal Wear</SelectItem>
                                   <SelectItem value="Lehenga">Lehenga</SelectItem>
                                   <SelectItem value="Jewellery">Jewellery</SelectItem>
-                                  <SelectItem value="Dupatta">Dupatta</SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
                           </div>
 
                           <div className="space-y-2">
-                            <Label htmlFor="image">Main Hero Image URL *</Label>
+                            <Label htmlFor="image">Main Image URL *</Label>
                             <div className="relative">
                               <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                               <Input 
                                 id="image" 
-                                placeholder="Main photo link..." 
+                                placeholder="Photo link..." 
                                 value={newProduct.image}
                                 onChange={(e) => setNewProduct({...newProduct, image: e.target.value})}
                                 className="pl-10 rounded-xl"
@@ -320,7 +312,7 @@ export default function AdminDashboard() {
                           </div>
 
                           <div className="space-y-4 pt-4 border-t">
-                            <Label>Additional Gallery Images (3-4 photos)</Label>
+                            <Label>Additional Gallery Images</Label>
                             <div className="flex gap-2">
                               <Input 
                                 placeholder="Additional photo link..." 
@@ -351,32 +343,17 @@ export default function AdminDashboard() {
                         
                         <div className="space-y-6">
                           <div className="space-y-2">
-                            <Label>Photo Preview (Main)</Label>
+                            <Label>Photo Preview</Label>
                             <div className="aspect-[3/4] rounded-2xl border-2 border-dashed border-muted flex items-center justify-center overflow-hidden bg-muted/5">
                               {newProduct.image && validateImageUrl(newProduct.image) ? (
-                                <img 
-                                  src={newProduct.image} 
-                                  alt="Preview" 
-                                  className="w-full h-full object-cover" 
-                                />
+                                <img src={newProduct.image} alt="Preview" className="w-full h-full object-cover" />
                               ) : (
                                 <div className="text-center p-6 text-muted-foreground">
                                   <ImageIcon className="h-12 w-12 mx-auto mb-2 opacity-20" />
-                                  <p className="text-xs">No main image preview</p>
+                                  <p className="text-xs">No image preview</p>
                                 </div>
                               )}
                             </div>
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <Label htmlFor="description">Product Description</Label>
-                            <Textarea 
-                              id="description" 
-                              placeholder="Describe the royal craftsmanship..." 
-                              value={newProduct.description}
-                              onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                              className="rounded-xl min-h-[100px]"
-                            />
                           </div>
                         </div>
                       </div>
@@ -385,9 +362,9 @@ export default function AdminDashboard() {
                         <Button 
                           onClick={handleAddProduct} 
                           disabled={!isFormValid || isSubmitting}
-                          className="w-full bg-[#E91E63] hover:bg-[#C2185B] rounded-full h-12 text-lg"
+                          className="w-full bg-[#E91E63] hover:bg-[#C2185B] rounded-full h-12"
                         >
-                          {isSubmitting ? <Loader2 className="animate-spin" /> : 'Save to Collection'}
+                          {isSubmitting ? <Loader2 className="animate-spin" /> : 'Save Collection'}
                         </Button>
                       </DialogFooter>
                     </DialogContent>
@@ -398,9 +375,9 @@ export default function AdminDashboard() {
               {/* Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
                 {stats.map((stat, idx) => (
-                  <Card key={idx} className="border-none shadow-xl rounded-[2.5rem] overflow-hidden group hover:scale-105 transition-transform duration-500">
+                  <Card key={idx} className="border-none shadow-xl rounded-[2.5rem] overflow-hidden group hover:scale-105 transition-transform">
                     <CardContent className="p-8 flex items-center gap-6">
-                      <div className={`p-5 rounded-3xl ${stat.bg} ${stat.color} transition-colors group-hover:bg-accent group-hover:text-white`}>
+                      <div className={`p-5 rounded-3xl ${stat.bg} ${stat.color}`}>
                         <stat.icon className="h-8 w-8" />
                       </div>
                       <div>
@@ -418,11 +395,8 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
                 <Card className="xl:col-span-2 border-none shadow-2xl rounded-[3rem] overflow-hidden">
                   <div className="flex flex-row items-center justify-between p-10 border-b bg-white">
-                    <h2 className="text-2xl font-headline text-accent font-bold">Latest Royal Orders</h2>
-                    <div className="relative w-72 hidden sm:block">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="Track order..." className="pl-12 rounded-full h-12 bg-muted/30 border-none" />
-                    </div>
+                    <h2 className="text-2xl font-headline text-accent font-bold">Recent Orders</h2>
+                    <Button variant="ghost" className="text-[#E91E63] font-bold">View All</Button>
                   </div>
                   <CardContent className="p-0">
                     <Table>
@@ -436,15 +410,13 @@ export default function AdminDashboard() {
                       </TableHeader>
                       <TableBody>
                         {recentOrders.map((order) => (
-                          <TableRow key={order.id} className="hover:bg-muted/30 transition-colors border-none">
+                          <TableRow key={order.id} className="hover:bg-muted/30 border-none">
                             <TableCell className="px-10 py-6 font-bold text-accent">{order.id}</TableCell>
                             <TableCell className="font-medium">{order.customer}</TableCell>
                             <TableCell className="font-bold text-accent">{order.amount}</TableCell>
                             <TableCell>
                               <Badge variant="outline" className={`rounded-full px-4 py-1.5 border-none font-bold text-[10px] ${
-                                order.status === 'Stitching' ? 'bg-pink-100 text-[#E91E63]' :
-                                order.status === 'Shipped' ? 'bg-blue-100 text-blue-600' :
-                                'bg-green-100 text-green-600'
+                                order.status === 'Stitching' ? 'bg-pink-100 text-[#E91E63]' : 'bg-blue-100 text-blue-600'
                               }`}>
                                 {order.status}
                               </Badge>
@@ -458,9 +430,7 @@ export default function AdminDashboard() {
 
                 <Card className="border-none shadow-2xl rounded-[3rem] overflow-hidden">
                   <div className="p-10 pb-0">
-                    <h2 className="text-2xl font-headline text-accent flex items-center gap-3 font-bold">
-                      <BarChart3 className="h-6 w-6 text-[#D4AF37]" /> Revenue
-                    </h2>
+                    <h2 className="text-2xl font-headline text-accent font-bold">Revenue Graph</h2>
                   </div>
                   <CardContent className="p-10">
                     <div className="h-64 bg-muted/10 rounded-[2rem] flex items-end justify-between p-8 gap-3">
@@ -479,22 +449,13 @@ export default function AdminDashboard() {
           {activeView === 'products' && (
             <div className="space-y-8 animate-in fade-in duration-500">
               <header className="flex justify-between items-center">
-                <h1 className="text-4xl font-headline font-bold text-accent">Inventory Catalog</h1>
-                <Button 
-                  onClick={() => setIsAddProductOpen(true)}
-                  className="bg-[#E91E63] rounded-full px-8 h-12 text-lg"
-                >
-                  Add New Design
+                <h1 className="text-4xl font-headline font-bold text-accent">Product Inventory</h1>
+                <Button onClick={() => setIsAddProductOpen(true)} className="bg-[#E91E63] rounded-full h-11 px-6">
+                  Add New Item
                 </Button>
               </header>
               <Card className="border-none shadow-2xl rounded-[3rem]">
                 <CardContent className="p-0">
-                  <div className="p-8 flex justify-between gap-6 border-b">
-                    <div className="relative flex-1">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="Filter collection..." className="pl-12 rounded-2xl h-12 border-muted" />
-                    </div>
-                  </div>
                   <Table>
                     <TableHeader>
                       <TableRow className="h-16 px-8">
@@ -502,25 +463,21 @@ export default function AdminDashboard() {
                         <TableHead className="font-bold uppercase text-xs">Name</TableHead>
                         <TableHead className="font-bold uppercase text-xs">Category</TableHead>
                         <TableHead className="font-bold uppercase text-xs">Price</TableHead>
-                        <TableHead className="font-bold uppercase text-xs">Status</TableHead>
+                        <TableHead className="font-bold uppercase text-xs">Stock</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {productsLoading ? (
-                        <TableRow><TableCell colSpan={5} className="h-32 text-center text-muted-foreground italic">Loading your masterpieces...</TableCell></TableRow>
+                        <TableRow><TableCell colSpan={5} className="h-32 text-center">Loading collection...</TableCell></TableRow>
                       ) : products?.map((product: any) => (
                         <TableRow key={product.id} className="h-24 hover:bg-muted/20">
                           <TableCell className="px-10">
-                            <div className="w-14 h-14 rounded-xl overflow-hidden border bg-muted flex items-center justify-center">
-                              {product.image ? (
-                                <img src={product.image} className="w-full h-full object-cover" alt="" />
-                              ) : (
-                                <ImageIcon className="h-6 w-6 text-muted-foreground/30" />
-                              )}
+                            <div className="w-14 h-14 rounded-xl overflow-hidden border">
+                              <img src={product.image} className="w-full h-full object-cover" alt="" />
                             </div>
                           </TableCell>
                           <TableCell className="font-bold text-accent">{product.name}</TableCell>
-                          <TableCell><Badge variant="secondary" className="bg-muted text-accent border-none">{product.category}</Badge></TableCell>
+                          <TableCell><Badge variant="secondary" className="bg-muted text-accent">{product.category}</Badge></TableCell>
                           <TableCell className="font-bold">₹{product.price?.toLocaleString()}</TableCell>
                           <TableCell>
                             <Badge className="bg-green-100 text-green-700 border-none font-bold uppercase text-[10px]">
@@ -533,40 +490,6 @@ export default function AdminDashboard() {
                   </Table>
                 </CardContent>
               </Card>
-            </div>
-          )}
-
-          {activeView === 'stitching' && (
-            <div className="space-y-8 animate-in fade-in duration-500">
-              <header className="flex justify-between items-center">
-                <h1 className="text-4xl font-headline font-bold text-accent">Tailoring Requests</h1>
-              </header>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {[1, 2, 3].map(i => (
-                  <Card key={i} className="border-none shadow-xl rounded-[2.5rem] overflow-hidden">
-                    <div className="bg-accent p-6 flex justify-between items-center text-white">
-                      <div className="flex items-center gap-3">
-                        <Scissors className="h-5 w-5 text-[#D4AF37]" />
-                        <span className="font-headline font-bold">REQ-882{i}</span>
-                      </div>
-                      <Badge className="bg-white/10 text-white border-none uppercase text-[10px]">New Request</Badge>
-                    </div>
-                    <CardContent className="p-8">
-                      <div className="flex justify-between items-center mb-6">
-                        <div>
-                          <p className="text-[10px] text-muted-foreground font-bold uppercase mb-1">Customer</p>
-                          <p className="text-lg font-bold text-accent">Maharani Devi</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-[10px] text-muted-foreground font-bold uppercase mb-1">Style</p>
-                          <p className="text-sm font-medium">Zardosi Bridal</p>
-                        </div>
-                      </div>
-                      <Button className="w-full bg-[#E91E63] hover:bg-[#C2185B] rounded-2xl h-12">Process Measurement</Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
             </div>
           )}
         </main>

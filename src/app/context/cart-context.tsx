@@ -24,7 +24,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    const savedCart = localStorage.getItem('commerceflow_cart');
+    const savedCart = localStorage.getItem('jasol_maa_cart');
     if (savedCart) {
       try {
         setItems(JSON.parse(savedCart));
@@ -35,7 +35,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('commerceflow_cart', JSON.stringify(items));
+    localStorage.setItem('jasol_maa_cart', JSON.stringify(items));
   }, [items]);
 
   const addToCart = (product: Product) => {

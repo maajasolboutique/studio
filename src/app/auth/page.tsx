@@ -29,8 +29,8 @@ export default function AuthPage() {
       <main className="flex-1 flex items-center justify-center p-4 py-20">
         <div className="w-full max-w-md bg-white p-8 rounded-3xl border shadow-xl">
           <div className="text-center mb-8 space-y-2">
-            <h1 className="text-3xl font-headline font-bold text-primary">CommerceFlow</h1>
-            <p className="text-muted-foreground">Join our community of tech enthusiasts.</p>
+            <h1 className="text-3xl font-headline font-bold text-accent">Jasol Maa Rajputi Boutique</h1>
+            <p className="text-muted-foreground">राजवाड़ी पहचान, शाही अंदाज़</p>
           </div>
 
           <Tabs defaultValue="login" className="space-y-6">
@@ -58,7 +58,7 @@ export default function AuthPage() {
                     <Input className="pl-10" type="password" placeholder="••••••••" required />
                   </div>
                 </div>
-                <Button type="submit" className="w-full h-12 bg-primary hover:bg-primary/90 rounded-xl" disabled={loading}>
+                <Button type="submit" className="w-full h-12 bg-accent hover:bg-accent/90 rounded-xl" disabled={loading}>
                   {loading ? "Signing in..." : "Continue"}
                 </Button>
               </form>
@@ -87,7 +87,7 @@ export default function AuthPage() {
                     <Input className="pl-10" type="password" placeholder="••••••••" required />
                   </div>
                 </div>
-                <Button type="submit" className="w-full h-12 bg-accent hover:bg-accent/90 rounded-xl" disabled={loading}>
+                <Button type="submit" className="w-full h-12 bg-[#E91E63] hover:bg-[#C2185B] text-white rounded-xl" disabled={loading}>
                   {loading ? "Creating account..." : "Create Account"}
                 </Button>
                 <p className="text-xs text-center text-muted-foreground px-4">
