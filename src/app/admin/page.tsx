@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Header } from '@/components/layout/Header';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   Users, 
   ShoppingBag, 
@@ -17,7 +17,8 @@ import {
   Search,
   BarChart3,
   Image as ImageIcon,
-  Link as LinkIcon
+  Link as LinkIcon,
+  Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,7 +32,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
 import { useCollection, useMemoFirebase, useFirestore } from '@/firebase';
-import { collection, query, orderBy, limit } from 'firebase/firestore';
+import { collection, query, orderBy, limit, addDoc, serverTimestamp } from 'firebase/firestore';
 import {
   Select,
   SelectContent,
@@ -50,12 +51,12 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { useToast } from '@/hooks/use-toast';
 
 export default function AdminDashboard() {
   const [activeView, setActiveView] = useState('dashboard');
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const db = useFirestore();
   const { toast } = useToast();
 
@@ -78,38 +79,89 @@ export default function AdminDashboard() {
 
   const { data: products, isLoading: productsLoading } = useCollection(productsQuery);
 
-  const handleAddProduct = () => {
+  const validateImageUrl = (url: string) => {
+    if (!url) return false;
+    // Reject tracking/ad links
+    if (url.includes('google.com/aclk') || url.includes('doubleclick') || url.includes('ad-services')) {
+      return false;
+    }
+    // Check for direct image extensions or firebase storage
+    const validExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+    const isDirectLink = validExtensions.some(ext => url.toLowerCase().split('?')[0].endsWith(ext));
+    const isFirebase = url.includes('firebasestorage.googleapis.com');
+    
+    return isDirectLink || isFirebase;
+  };
+
+  const handleAddProduct = async () => {
     if (!db) return;
     
-    const finalImage = newProduct.image || `https://picsum.photos/seed/${Math.random()}/600/800`;
-    
-    const productData = {
-      ...newProduct,
-      image: finalImage,
-      price: parseFloat(newProduct.price) || 0,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      isNew: true
-    };
+    // Validation
+    if (!newProduct.name || !newProduct.price || !newProduct.image) {
+      toast({
+        variant: "destructive",
+        title: "Validation Error",
+        description: "Please fill in all required fields (Name, Price, Image).",
+      });
+      return;
+    }
 
-    addDocumentNonBlocking(collection(db, 'products'), productData);
+    if (!validateImageUrl(newProduct.image)) {
+      toast({
+        variant: "destructive",
+        title: "Invalid Image URL",
+        description: "Please enter a valid direct product image URL (e.g., ends in .jpg, .png). Ad links are not allowed.",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
     
-    setIsAddProductOpen(false);
-    toast({
-      title: "Product Added",
-      description: `${newProduct.name} has been added to your royal collection.`,
-    });
-    
-    // Reset form
-    setNewProduct({
-      name: '',
-      category: 'Rajputi Poshak',
-      price: '',
-      fabric: '',
-      description: '',
-      image: '',
-      stockStatus: 'In Stock'
-    });
+    try {
+      const productData = {
+        ...newProduct,
+        price: parseFloat(newProduct.price) || 0,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        isNew: true
+      };
+
+      await addDoc(collection(db, 'products'), productData);
+      
+      setIsAddProductOpen(false);
+      toast({
+        title: "Product Added",
+        description: `${newProduct.name} has been added successfully to your royal collection.`,
+      });
+      
+      // Reset form
+      setNewProduct({
+        name: '',
+        category: 'Rajputi Poshak',
+        price: '',
+        fabric: '',
+        description: '',
+        image: '',
+        stockStatus: 'In Stock'
+      });
+    } catch (error: any) {
+      console.error("Firestore Error:", error);
+      let errorMessage = "Could not save product. Please verify product details.";
+      
+      if (error.code === 'permission-denied') {
+        errorMessage = "Database permission issue. Please contact support.";
+      } else if (error.message.includes('network')) {
+        errorMessage = "Check your internet connection and try again.";
+      }
+
+      toast({
+        variant: "destructive",
+        title: "Submission Failed",
+        description: errorMessage,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const stats = [
@@ -135,6 +187,8 @@ export default function AdminDashboard() {
     { id: "ORD-9919", customer: "Padma Rathore", amount: "₹18,500", status: "Confirmed", date: "3 hours ago", items: 3 },
     { id: "ORD-9918", customer: "Kaveri Kanwar", amount: "₹1,999", status: "Delivered", date: "Yesterday", items: 1 },
   ];
+
+  const isFormValid = newProduct.name && newProduct.price && validateImageUrl(newProduct.image);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FFFBFB]">
@@ -194,7 +248,7 @@ export default function AdminDashboard() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
                         <div className="space-y-6">
                           <div className="space-y-2">
-                            <Label htmlFor="name">Product Name</Label>
+                            <Label htmlFor="name">Product Name *</Label>
                             <Input 
                               id="name" 
                               placeholder="e.g. Maharani Poshak" 
@@ -205,7 +259,7 @@ export default function AdminDashboard() {
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                              <Label htmlFor="price">Price (₹)</Label>
+                              <Label htmlFor="price">Price (₹) *</Label>
                               <Input 
                                 id="price" 
                                 type="number" 
@@ -245,7 +299,7 @@ export default function AdminDashboard() {
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label htmlFor="image">Image URL</Label>
+                            <Label htmlFor="image">Image URL *</Label>
                             <div className="relative">
                               <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                               <Input 
@@ -253,10 +307,13 @@ export default function AdminDashboard() {
                                 placeholder="https://example.com/photo.jpg" 
                                 value={newProduct.image}
                                 onChange={(e) => setNewProduct({...newProduct, image: e.target.value})}
-                                className="pl-10 rounded-xl"
+                                className={`pl-10 rounded-xl ${newProduct.image && !validateImageUrl(newProduct.image) ? 'border-destructive' : ''}`}
                               />
                             </div>
-                            <p className="text-[10px] text-muted-foreground italic">Paste a link to your product photo here.</p>
+                            {newProduct.image && !validateImageUrl(newProduct.image) && (
+                              <p className="text-[10px] text-destructive font-bold">Error: Ad links are blocked. Please provide a direct image link.</p>
+                            )}
+                            <p className="text-[10px] text-muted-foreground italic">Paste a direct .jpg, .png, or .webp link.</p>
                           </div>
                         </div>
                         
@@ -264,12 +321,23 @@ export default function AdminDashboard() {
                           <div className="space-y-2">
                             <Label>Photo Preview</Label>
                             <div className="aspect-[3/4] rounded-2xl border-2 border-dashed border-muted flex items-center justify-center overflow-hidden bg-muted/5 group relative">
-                              {newProduct.image ? (
-                                <img src={newProduct.image} alt="Preview" className="w-full h-full object-cover" />
+                              {newProduct.image && validateImageUrl(newProduct.image) ? (
+                                <img 
+                                  src={newProduct.image} 
+                                  alt="Preview" 
+                                  className="w-full h-full object-cover animate-in fade-in zoom-in-95" 
+                                  onError={() => {
+                                    toast({
+                                      variant: "destructive",
+                                      title: "Image Error",
+                                      description: "The provided URL could not be loaded as an image.",
+                                    });
+                                  }}
+                                />
                               ) : (
                                 <div className="text-center p-6">
                                   <ImageIcon className="h-12 w-12 text-muted-foreground/30 mx-auto mb-2" />
-                                  <p className="text-xs text-muted-foreground">No image provided yet</p>
+                                  <p className="text-xs text-muted-foreground">No valid image preview</p>
                                 </div>
                               )}
                             </div>
@@ -289,9 +357,17 @@ export default function AdminDashboard() {
                       <DialogFooter className="pt-4 border-t">
                         <Button 
                           onClick={handleAddProduct} 
+                          disabled={!isFormValid || isSubmitting}
                           className="w-full bg-[#E91E63] hover:bg-[#C2185B] rounded-full h-12 text-lg shadow-lg"
                         >
-                          Save to Collection
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                              Adding to Vault...
+                            </>
+                          ) : (
+                            'Save to Collection'
+                          )}
                         </Button>
                       </DialogFooter>
                     </DialogContent>
@@ -322,13 +398,13 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
                 {/* Recent Orders Table */}
                 <Card className="xl:col-span-2 border-none shadow-2xl rounded-[3rem] overflow-hidden">
-                  <CardHeader className="flex flex-row items-center justify-between p-10 border-b bg-white">
-                    <CardTitle className="text-2xl font-headline text-accent">Latest Royal Orders</CardTitle>
+                  <div className="flex flex-row items-center justify-between p-10 border-b bg-white">
+                    <h2 className="text-2xl font-headline text-accent font-bold">Latest Royal Orders</h2>
                     <div className="relative w-72 hidden sm:block">
                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input placeholder="Track order..." className="pl-12 rounded-full h-12 bg-muted/30 border-none" />
                     </div>
-                  </CardHeader>
+                  </div>
                   <CardContent className="p-0">
                     <Table>
                       <TableHeader>
@@ -363,11 +439,11 @@ export default function AdminDashboard() {
 
                 {/* Performance Widget */}
                 <Card className="border-none shadow-2xl rounded-[3rem] overflow-hidden">
-                  <CardHeader className="p-10 pb-0">
-                    <CardTitle className="text-2xl font-headline text-accent flex items-center gap-3">
+                  <div className="p-10 pb-0">
+                    <h2 className="text-2xl font-headline text-accent flex items-center gap-3 font-bold">
                       <BarChart3 className="h-6 w-6 text-[#D4AF37]" /> Revenue
-                    </CardTitle>
-                  </CardHeader>
+                    </h2>
+                  </div>
                   <CardContent className="p-10">
                     <div className="h-64 bg-muted/10 rounded-[2rem] flex items-end justify-between p-8 gap-3">
                       {[40, 65, 45, 100, 75, 85, 95].map((h, i) => (
