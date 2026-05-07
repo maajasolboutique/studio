@@ -3,10 +3,11 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { CartProvider } from './context/cart-context';
 import { Toaster } from '@/components/ui/toaster';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
-  title: 'CommerceFlow | Professional Electronics Shop',
-  description: 'A sophisticated e-commerce experience for tech enthusiasts.',
+  title: 'Jasol Maa Boutique | Rajwadi Pehchan, Shahi Andaz',
+  description: 'A premium Rajputi boutique experience for royal heritage fashion.',
 };
 
 export default function RootLayout({
@@ -22,10 +23,12 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased bg-background text-foreground">
-        <CartProvider>
-          {children}
-          <Toaster />
-        </CartProvider>
+        <FirebaseClientProvider>
+          <CartProvider>
+            {children}
+            <Toaster />
+          </CartProvider>
+        </FirebaseClientProvider>
       </body>
     </html>
   );
