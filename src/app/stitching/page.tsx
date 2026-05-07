@@ -30,6 +30,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 export default function CustomStitchingPage() {
   const [step, setStep] = useState(1);

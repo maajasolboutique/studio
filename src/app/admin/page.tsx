@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from 'react';
@@ -37,6 +36,13 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCollection, useMemoFirebase, useFirestore } from '@/firebase';
 import { collection, query, orderBy, limit } from 'firebase/firestore';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function AdminDashboard() {
   const [activeView, setActiveView] = useState('dashboard');
@@ -382,4 +388,3 @@ export default function AdminDashboard() {
     </div>
   );
 }
-    
