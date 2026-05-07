@@ -14,12 +14,10 @@ import {
   Settings,
   TicketPercent,
   MessageSquare,
-  ChevronRight,
-  MoreVertical,
   Search,
-  Clock,
   BarChart3,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Link as LinkIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -68,7 +66,7 @@ export default function AdminDashboard() {
     price: '',
     fabric: '',
     description: '',
-    image: 'https://picsum.photos/seed/new-poshak/600/800',
+    image: '',
     stockStatus: 'In Stock'
   });
 
@@ -83,8 +81,11 @@ export default function AdminDashboard() {
   const handleAddProduct = () => {
     if (!db) return;
     
+    const finalImage = newProduct.image || `https://picsum.photos/seed/${Math.random()}/600/800`;
+    
     const productData = {
       ...newProduct,
+      image: finalImage,
       price: parseFloat(newProduct.price) || 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -106,7 +107,7 @@ export default function AdminDashboard() {
       price: '',
       fabric: '',
       description: '',
-      image: 'https://picsum.photos/seed/new-poshak/600/800',
+      image: '',
       stockStatus: 'In Stock'
     });
   };
@@ -185,13 +186,13 @@ export default function AdminDashboard() {
                         <Plus className="h-5 w-5" /> Add Collection
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[600px] rounded-[2rem] border-none shadow-2xl">
+                    <DialogContent className="sm:max-w-[700px] rounded-[2rem] border-none shadow-2xl overflow-y-auto max-h-[90vh]">
                       <DialogHeader>
                         <DialogTitle className="text-2xl font-headline text-accent">Add New Royal Item</DialogTitle>
-                        <DialogDescription>Enter the details for your new boutique masterpiece.</DialogDescription>
+                        <DialogDescription>Enter the details and upload a photo for your new boutique masterpiece.</DialogDescription>
                       </DialogHeader>
-                      <div className="grid gap-6 py-4">
-                        <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
+                        <div className="space-y-6">
                           <div className="space-y-2">
                             <Label htmlFor="name">Product Name</Label>
                             <Input 
@@ -202,36 +203,36 @@ export default function AdminDashboard() {
                               className="rounded-xl"
                             />
                           </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="price">Price (₹)</Label>
-                            <Input 
-                              id="price" 
-                              type="number" 
-                              placeholder="0" 
-                              value={newProduct.price}
-                              onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
-                              className="rounded-xl"
-                            />
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="category">Category</Label>
-                            <Select 
-                              defaultValue={newProduct.category}
-                              onValueChange={(val) => setNewProduct({...newProduct, category: val})}
-                            >
-                              <SelectTrigger className="rounded-xl">
-                                <SelectValue placeholder="Select Category" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Rajputi Poshak">Rajputi Poshak</SelectItem>
-                                <SelectItem value="Bridal Wear">Bridal Wear</SelectItem>
-                                <SelectItem value="Lehenga">Lehenga</SelectItem>
-                                <SelectItem value="Jewellery">Jewellery</SelectItem>
-                                <SelectItem value="Dupatta">Dupatta</SelectItem>
-                              </SelectContent>
-                            </Select>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="price">Price (₹)</Label>
+                              <Input 
+                                id="price" 
+                                type="number" 
+                                placeholder="0" 
+                                value={newProduct.price}
+                                onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
+                                className="rounded-xl"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="category">Category</Label>
+                              <Select 
+                                defaultValue={newProduct.category}
+                                onValueChange={(val) => setNewProduct({...newProduct, category: val})}
+                              >
+                                <SelectTrigger className="rounded-xl">
+                                  <SelectValue placeholder="Select Category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Rajputi Poshak">Rajputi Poshak</SelectItem>
+                                  <SelectItem value="Bridal Wear">Bridal Wear</SelectItem>
+                                  <SelectItem value="Lehenga">Lehenga</SelectItem>
+                                  <SelectItem value="Jewellery">Jewellery</SelectItem>
+                                  <SelectItem value="Dupatta">Dupatta</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="fabric">Fabric Type</Label>
@@ -243,24 +244,54 @@ export default function AdminDashboard() {
                               className="rounded-xl"
                             />
                           </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="image">Image URL</Label>
+                            <div className="relative">
+                              <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                              <Input 
+                                id="image" 
+                                placeholder="https://example.com/photo.jpg" 
+                                value={newProduct.image}
+                                onChange={(e) => setNewProduct({...newProduct, image: e.target.value})}
+                                className="pl-10 rounded-xl"
+                              />
+                            </div>
+                            <p className="text-[10px] text-muted-foreground italic">Paste a link to your product photo here.</p>
+                          </div>
                         </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="description">Product Description</Label>
-                          <Textarea 
-                            id="description" 
-                            placeholder="Describe the royal craftsmanship..." 
-                            value={newProduct.description}
-                            onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                            className="rounded-xl min-h-[100px]"
-                          />
+                        
+                        <div className="space-y-6">
+                          <div className="space-y-2">
+                            <Label>Photo Preview</Label>
+                            <div className="aspect-[3/4] rounded-2xl border-2 border-dashed border-muted flex items-center justify-center overflow-hidden bg-muted/5 group relative">
+                              {newProduct.image ? (
+                                <img src={newProduct.image} alt="Preview" className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="text-center p-6">
+                                  <ImageIcon className="h-12 w-12 text-muted-foreground/30 mx-auto mb-2" />
+                                  <p className="text-xs text-muted-foreground">No image provided yet</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="description">Product Description</Label>
+                            <Textarea 
+                              id="description" 
+                              placeholder="Describe the royal craftsmanship..." 
+                              value={newProduct.description}
+                              onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
+                              className="rounded-xl min-h-[80px]"
+                            />
+                          </div>
                         </div>
                       </div>
-                      <DialogFooter>
+                      <DialogFooter className="pt-4 border-t">
                         <Button 
                           onClick={handleAddProduct} 
                           className="w-full bg-[#E91E63] hover:bg-[#C2185B] rounded-full h-12 text-lg shadow-lg"
                         >
-                          Save Collection
+                          Save to Collection
                         </Button>
                       </DialogFooter>
                     </DialogContent>
