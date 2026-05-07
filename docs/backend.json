@@ -1,0 +1,2702 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a customer's profile, containing personal information and preferences for a personalized shopping experience.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the user."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the user."
+        },
+        "phone": {
+          "type": "string",
+          "description": "The user's contact phone number."
+        },
+        "loyaltyStatusId": {
+          "type": "string",
+          "description": "Reference to the user's current loyalty status. (Relationship: UserLoyaltyStatus 1:N UserProfile)"
+        },
+        "referralCode": {
+          "type": "string",
+          "description": "The unique referral code for this user to share."
+        },
+        "defaultShippingAddressId": {
+          "type": "string",
+          "description": "Reference to the user's default shipping address. (Relationship: Address 1:N UserProfile)"
+        },
+        "defaultBillingAddressId": {
+          "type": "string",
+          "description": "Reference to the user's default billing address. (Relationship: Address 1:N UserProfile)"
+        },
+        "languagePreference": {
+          "type": "string",
+          "description": "The user's preferred language (e.g., 'English', 'Hindi')."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the user profile was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the user profile was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "firstName",
+        "lastName",
+        "phone",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "AdminUser": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AdminUser",
+      "type": "object",
+      "description": "Represents an administrative user with specific roles and permissions for managing the application. Authentication is handled by an external system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the AdminUser entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "The admin user's email address.",
+          "format": "email"
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name of the admin user."
+        },
+        "role": {
+          "type": "string",
+          "description": "The role assigned to the admin user (e.g., 'SuperAdmin', 'ProductManager', 'CustomerSupport')."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the admin user was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the admin user's information was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "name",
+        "role",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Product",
+      "type": "object",
+      "description": "Represents a single product available for sale in the e-commerce store.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Product entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the product."
+        },
+        "sku": {
+          "type": "string",
+          "description": "Stock Keeping Unit, a unique identifier for the product variant."
+        },
+        "barcode": {
+          "type": "string",
+          "description": "The barcode for inventory management."
+        },
+        "price": {
+          "type": "number",
+          "description": "The original selling price of the product."
+        },
+        "discountedPrice": {
+          "type": "number",
+          "description": "The discounted price of the product, if applicable."
+        },
+        "categoryId": {
+          "type": "string",
+          "description": "Reference to the category the product belongs to. (Relationship: Category 1:N Product)"
+        },
+        "fabricDetails": {
+          "type": "string",
+          "description": "Details about the fabric used in the product."
+        },
+        "weight": {
+          "type": "number",
+          "description": "The weight of the product in appropriate units (e.g., grams)."
+        },
+        "washInstructions": {
+          "type": "string",
+          "description": "Instructions for washing and caring for the product."
+        },
+        "occasionTags": {
+          "type": "array",
+          "description": "Tags indicating suitable occasions for the product (e.g., 'Wedding', 'Festival').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "colors": {
+          "type": "array",
+          "description": "List of available colors for the product (e.g., hex codes or color names).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sizeChartImageUrl": {
+          "type": "string",
+          "description": "URL to an image displaying the size chart for the product.",
+          "format": "uri"
+        },
+        "inventoryCount": {
+          "type": "number",
+          "description": "The current quantity of the product available in stock."
+        },
+        "expectedDispatchTime": {
+          "type": "string",
+          "description": "Estimated time for dispatch (e.g., '2-3 business days')."
+        },
+        "estimatedDeliveryDate": {
+          "type": "string",
+          "description": "Estimated time for delivery (e.g., '5-7 business days')."
+        },
+        "availablePincodes": {
+          "type": "array",
+          "description": "List of pincodes where the product is available for delivery.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "videoPreviewUrl": {
+          "type": "string",
+          "description": "URL to a video preview of the product.",
+          "format": "uri"
+        },
+        "averageRating": {
+          "type": "number",
+          "description": "Calculated average rating based on customer reviews."
+        },
+        "totalReviews": {
+          "type": "number",
+          "description": "Total number of reviews for the product."
+        },
+        "seoTags": {
+          "type": "array",
+          "description": "Search Engine Optimization tags for the product.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isLimitedStock": {
+          "type": "boolean",
+          "description": "Flag indicating if the product has limited stock."
+        },
+        "isHotSelling": {
+          "type": "boolean",
+          "description": "Flag indicating if the product is a hot-selling item."
+        },
+        "isNewArrival": {
+          "type": "boolean",
+          "description": "Flag indicating if the product is a new arrival."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the product was added to the catalog.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the product details were last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "sku",
+        "barcode",
+        "price",
+        "categoryId",
+        "fabricDetails",
+        "weight",
+        "washInstructions",
+        "inventoryCount",
+        "expectedDispatchTime",
+        "estimatedDeliveryDate",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ProductImage": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ProductImage",
+      "type": "object",
+      "description": "Stores image and video assets for a product, including multiple views and 360-degree options.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ProductImage entity."
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to the product this image belongs to. (Relationship: Product 1:N ProductImage)"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the product image.",
+          "format": "uri"
+        },
+        "is360Image": {
+          "type": "boolean",
+          "description": "Flag indicating if this image is part of a 360-degree view."
+        },
+        "isHeroImage": {
+          "type": "boolean",
+          "description": "Flag indicating if this is the primary or hero image for the product."
+        },
+        "order": {
+          "type": "number",
+          "description": "The display order of the image for the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description or caption for the image."
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "imageUrl",
+        "isHeroImage",
+        "order",
+        "description"
+      ]
+    },
+    "Category": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Category",
+      "type": "object",
+      "description": "Defines product categories to organize the catalog (e.g., 'Bridal Poshak', 'Lehenga').",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Category entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the category."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the category."
+        },
+        "parentCategoryId": {
+          "type": "string",
+          "description": "Reference to the parent category for hierarchical organization. (Relationship: Category 1:N Category)"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL to an image representing the category.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ]
+    },
+    "Review": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Review",
+      "type": "object",
+      "description": "Stores customer reviews and ratings for products, optionally with images.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Review entity."
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to the product being reviewed. (Relationship: Product 1:N Review)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who wrote the review. (Relationship: UserProfile 1:N Review)"
+        },
+        "rating": {
+          "type": "number",
+          "description": "The star rating given (1-5)."
+        },
+        "comment": {
+          "type": "string",
+          "description": "The text content of the review."
+        },
+        "imageUrls": {
+          "type": "array",
+          "description": "URLs of images uploaded with the review.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the review was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the review was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "userId",
+        "rating",
+        "comment",
+        "createdAt"
+      ]
+    },
+    "QuestionAndAnswer": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "QuestionAndAnswer",
+      "type": "object",
+      "description": "Manages customer questions about products and corresponding answers from the store or other users.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the QuestionAndAnswer entity."
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to the product the question is about. (Relationship: Product 1:N QuestionAndAnswer)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who asked the question. (Relationship: UserProfile 1:N QuestionAndAnswer)"
+        },
+        "question": {
+          "type": "string",
+          "description": "The question asked by the user."
+        },
+        "answer": {
+          "type": "string",
+          "description": "The answer to the question."
+        },
+        "askedAt": {
+          "type": "string",
+          "description": "Timestamp when the question was asked.",
+          "format": "date-time"
+        },
+        "answeredAt": {
+          "type": "string",
+          "description": "Timestamp when the question was answered.",
+          "format": "date-time"
+        },
+        "adminId": {
+          "type": "string",
+          "description": "Reference to the admin user who provided the answer, if applicable. (Relationship: AdminUser 1:N QuestionAndAnswer)"
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "userId",
+        "question",
+        "askedAt"
+      ]
+    },
+    "Cart": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Cart",
+      "type": "object",
+      "description": "Represents a user's shopping cart, holding items they intend to purchase.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Cart entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who owns the cart. (Relationship: UserProfile 1:N Cart)"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the cart was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the cart was last updated.",
+          "format": "date-time"
+        },
+        "isAbandoned": {
+          "type": "boolean",
+          "description": "Flag indicating if the cart has been abandoned (not converted to an order)."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "CartItem": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CartItem",
+      "type": "object",
+      "description": "Represents a single product item added to a user's shopping cart.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CartItem entity."
+        },
+        "cartId": {
+          "type": "string",
+          "description": "Reference to the shopping cart this item belongs to. (Relationship: Cart 1:N CartItem)"
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to the product added to the cart. (Relationship: Product 1:N CartItem)"
+        },
+        "quantity": {
+          "type": "number",
+          "description": "The quantity of the product in the cart."
+        },
+        "priceAtTimeOfAddition": {
+          "type": "number",
+          "description": "The price of the product when it was added to the cart."
+        },
+        "stitchingRequestId": {
+          "type": "string",
+          "description": "Optional reference to a custom stitching request if this item requires customization. (Relationship: StitchingRequest 1:N CartItem)"
+        },
+        "addedAt": {
+          "type": "string",
+          "description": "Timestamp when the item was added to the cart.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "cartId",
+        "productId",
+        "quantity",
+        "priceAtTimeOfAddition",
+        "addedAt"
+      ]
+    },
+    "Order": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Order",
+      "type": "object",
+      "description": "Represents a finalized purchase by a user, containing details about the transaction and products.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Order entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who placed the order. (Relationship: UserProfile 1:N Order)"
+        },
+        "orderNumber": {
+          "type": "string",
+          "description": "A human-readable, unique order number."
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "The total amount of the order, including shipping and taxes, after discounts."
+        },
+        "discountAmount": {
+          "type": "number",
+          "description": "The total discount applied to the order."
+        },
+        "shippingAmount": {
+          "type": "number",
+          "description": "The shipping charges for the order."
+        },
+        "taxAmount": {
+          "type": "number",
+          "description": "The total tax applied to the order."
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "The payment method used for the order (e.g., 'UPI', 'COD', 'Credit Card')."
+        },
+        "paymentStatus": {
+          "type": "string",
+          "description": "The current status of the payment (e.g., 'Pending', 'Paid', 'Refunded')."
+        },
+        "orderStatus": {
+          "type": "string",
+          "description": "The overall status of the order (e.g., 'Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled')."
+        },
+        "shippingAddressId": {
+          "type": "string",
+          "description": "Reference to the shipping address for this order. (Relationship: Address 1:N Order)"
+        },
+        "billingAddressId": {
+          "type": "string",
+          "description": "Reference to the billing address for this order. (Relationship: Address 1:N Order)"
+        },
+        "couponId": {
+          "type": "string",
+          "description": "Optional reference to the coupon applied to this order. (Relationship: Coupon 1:N Order)"
+        },
+        "specialInstructions": {
+          "type": "string",
+          "description": "Any special notes or instructions for the seller from the customer."
+        },
+        "giftWrapOption": {
+          "type": "boolean",
+          "description": "Indicates if gift wrapping was requested for the order."
+        },
+        "scheduledDeliveryDate": {
+          "type": "string",
+          "description": "The requested scheduled delivery date, if applicable.",
+          "format": "date-time"
+        },
+        "expressDelivery": {
+          "type": "boolean",
+          "description": "Flag indicating if express delivery was chosen."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the order was placed.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the order status was last updated.",
+          "format": "date-time"
+        },
+        "invoiceId": {
+          "type": "string",
+          "description": "Reference to the invoice generated for this order. (Relationship: Invoice 1:N Order)"
+        },
+        "deliveryOtp": {
+          "type": "string",
+          "description": "One-Time Password for delivery verification."
+        },
+        "loyaltyPointsEarned": {
+          "type": "number",
+          "description": "The number of loyalty points earned with this order."
+        },
+        "loyaltyPointsUsed": {
+          "type": "number",
+          "description": "The number of loyalty points used for discount in this order."
+        },
+        "referralCodeUsed": {
+          "type": "string",
+          "description": "The referral code used for this order, if any."
+        },
+        "adminNotes": {
+          "type": "string",
+          "description": "Internal notes from admin for CRM purposes."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "orderNumber",
+        "totalAmount",
+        "paymentMethod",
+        "paymentStatus",
+        "orderStatus",
+        "shippingAddressId",
+        "billingAddressId",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "OrderItem": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "OrderItem",
+      "type": "object",
+      "description": "Represents a single product item within a placed order.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the OrderItem entity."
+        },
+        "orderId": {
+          "type": "string",
+          "description": "Reference to the order this item belongs to. (Relationship: Order 1:N OrderItem)"
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to the product in the order. (Relationship: Product 1:N OrderItem)"
+        },
+        "quantity": {
+          "type": "number",
+          "description": "The quantity of the product in the order."
+        },
+        "priceAtPurchase": {
+          "type": "number",
+          "description": "The price of the product at the time of purchase."
+        },
+        "stitchingRequestId": {
+          "type": "string",
+          "description": "Optional reference to a custom stitching request if this item was customized. (Relationship: StitchingRequest 1:N OrderItem)"
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of this specific item within the order (e.g., 'Ready for Dispatch', 'Dispatched')."
+        }
+      },
+      "required": [
+        "id",
+        "orderId",
+        "productId",
+        "quantity",
+        "priceAtPurchase"
+      ]
+    },
+    "Address": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Address",
+      "type": "object",
+      "description": "Stores user addresses for shipping and billing purposes.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Address entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who owns this address. (Relationship: UserProfile 1:N Address)"
+        },
+        "fullName": {
+          "type": "string",
+          "description": "The full name of the recipient."
+        },
+        "addressLine1": {
+          "type": "string",
+          "description": "First line of the street address."
+        },
+        "addressLine2": {
+          "type": "string",
+          "description": "Second line of the street address, optional."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city of the address."
+        },
+        "state": {
+          "type": "string",
+          "description": "The state or province of the address."
+        },
+        "pincode": {
+          "type": "string",
+          "description": "The postal code or pincode of the address."
+        },
+        "country": {
+          "type": "string",
+          "description": "The country of the address."
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact phone number for this address."
+        },
+        "isDefault": {
+          "type": "boolean",
+          "description": "Flag indicating if this is the user's default address for its type."
+        },
+        "addressType": {
+          "type": "string",
+          "description": "The type of address (e.g., 'Shipping', 'Billing')."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "fullName",
+        "addressLine1",
+        "city",
+        "state",
+        "pincode",
+        "country",
+        "phone",
+        "isDefault",
+        "addressType"
+      ]
+    },
+    "Coupon": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Coupon",
+      "type": "object",
+      "description": "Defines discount coupons that can be applied to orders.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Coupon entity."
+        },
+        "code": {
+          "type": "string",
+          "description": "The unique code customers use to apply the coupon."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the coupon and its benefits."
+        },
+        "discountType": {
+          "type": "string",
+          "description": "The type of discount ('percentage' or 'fixed_amount')."
+        },
+        "discountValue": {
+          "type": "number",
+          "description": "The value of the discount (e.g., '10' for 10% or 10 INR)."
+        },
+        "minOrderAmount": {
+          "type": "number",
+          "description": "The minimum order amount required to use the coupon."
+        },
+        "maxDiscountAmount": {
+          "type": "number",
+          "description": "The maximum discount amount that can be availed using the coupon."
+        },
+        "validFrom": {
+          "type": "string",
+          "description": "The date and time from which the coupon is valid.",
+          "format": "date-time"
+        },
+        "validUntil": {
+          "type": "string",
+          "description": "The date and time until which the coupon is valid.",
+          "format": "date-time"
+        },
+        "usageLimit": {
+          "type": "number",
+          "description": "The total number of times this coupon can be used across all users."
+        },
+        "perUserUsageLimit": {
+          "type": "number",
+          "description": "The maximum number of times a single user can use this coupon."
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Flag indicating if the coupon is currently active."
+        }
+      },
+      "required": [
+        "id",
+        "code",
+        "description",
+        "discountType",
+        "discountValue",
+        "validFrom",
+        "validUntil",
+        "isActive"
+      ]
+    },
+    "PaymentTransaction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PaymentTransaction",
+      "type": "object",
+      "description": "Records details of a payment transaction associated with an order.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the PaymentTransaction entity."
+        },
+        "orderId": {
+          "type": "string",
+          "description": "Reference to the order associated with this payment. (Relationship: Order 1:N PaymentTransaction)"
+        },
+        "paymentGatewayTransactionId": {
+          "type": "string",
+          "description": "The transaction ID provided by the payment gateway (e.g., Razorpay)."
+        },
+        "amount": {
+          "type": "number",
+          "description": "The amount of money involved in the transaction."
+        },
+        "currency": {
+          "type": "string",
+          "description": "The currency of the transaction (e.g., 'INR')."
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the transaction (e.g., 'Success', 'Failed', 'Pending', 'Refunded')."
+        },
+        "method": {
+          "type": "string",
+          "description": "The payment method used (e.g., 'UPI', 'Credit Card', 'COD')."
+        },
+        "transactionDate": {
+          "type": "string",
+          "description": "Timestamp when the transaction occurred.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "orderId",
+        "paymentGatewayTransactionId",
+        "amount",
+        "currency",
+        "status",
+        "method",
+        "transactionDate"
+      ]
+    },
+    "Shipment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Shipment",
+      "type": "object",
+      "description": "Manages shipping and delivery tracking information for an order.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Shipment entity."
+        },
+        "orderId": {
+          "type": "string",
+          "description": "Reference to the order being shipped. (Relationship: Order 1:N Shipment)"
+        },
+        "trackingNumber": {
+          "type": "string",
+          "description": "The unique tracking number provided by the shipping carrier."
+        },
+        "carrier": {
+          "type": "string",
+          "description": "The name of the shipping carrier (e.g., 'Delhivery', 'BlueDart')."
+        },
+        "currentStatus": {
+          "type": "string",
+          "description": "The current status of the shipment (e.g., 'Packed', 'In Transit', 'Out for Delivery', 'Delivered')."
+        },
+        "estimatedDeliveryDate": {
+          "type": "string",
+          "description": "The estimated date and time of delivery.",
+          "format": "date-time"
+        },
+        "shippedDate": {
+          "type": "string",
+          "description": "The actual date and time when the shipment was dispatched.",
+          "format": "date-time"
+        },
+        "deliveredDate": {
+          "type": "string",
+          "description": "The actual date and time when the shipment was delivered.",
+          "format": "date-time"
+        },
+        "originLocation": {
+          "type": "string",
+          "description": "The origin location of the shipment."
+        },
+        "destinationLocation": {
+          "type": "string",
+          "description": "The destination location of the shipment."
+        },
+        "shippingLabelUrl": {
+          "type": "string",
+          "description": "URL to the printable shipping label.",
+          "format": "uri"
+        },
+        "weight": {
+          "type": "number",
+          "description": "The weight of the shipment package."
+        },
+        "dimensions": {
+          "type": "string",
+          "description": "The dimensions of the shipment package (e.g., 'LxWxH')."
+        }
+      },
+      "required": [
+        "id",
+        "orderId",
+        "trackingNumber",
+        "carrier",
+        "currentStatus",
+        "estimatedDeliveryDate",
+        "shippedDate",
+        "originLocation",
+        "destinationLocation"
+      ]
+    },
+    "Wishlist": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Wishlist",
+      "type": "object",
+      "description": "Allows users to save products they are interested in for future purchase, optionally organizing them into folders.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Wishlist entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who owns this wishlist. (Relationship: UserProfile 1:N Wishlist)"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the wishlist folder (e.g., 'Wedding Collection', 'Favorites')."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the wishlist was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the wishlist was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "name",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "WishlistItem": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "WishlistItem",
+      "type": "object",
+      "description": "Represents a single product added to a user's wishlist.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the WishlistItem entity."
+        },
+        "wishlistId": {
+          "type": "string",
+          "description": "Reference to the wishlist this item belongs to. (Relationship: Wishlist 1:N WishlistItem)"
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to the product in the wishlist. (Relationship: Product 1:N WishlistItem)"
+        },
+        "addedAt": {
+          "type": "string",
+          "description": "Timestamp when the product was added to the wishlist.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "wishlistId",
+        "productId",
+        "addedAt"
+      ]
+    },
+    "StitchingRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "StitchingRequest",
+      "type": "object",
+      "description": "Manages custom Rajputi stitching requests from customers, including measurements and design choices.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the StitchingRequest entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who placed the stitching request. (Relationship: UserProfile 1:N StitchingRequest)"
+        },
+        "productId": {
+          "type": "string",
+          "description": "Optional reference to a base product for the stitching request. (Relationship: Product 1:N StitchingRequest)"
+        },
+        "stitchingType": {
+          "type": "string",
+          "description": "The type of stitching requested (e.g., 'Salwar Kameez', 'Lehenga')."
+        },
+        "embroideryStyle": {
+          "type": "string",
+          "description": "The chosen embroidery style."
+        },
+        "neckDesign": {
+          "type": "string",
+          "description": "The chosen neck design."
+        },
+        "sleeveStyle": {
+          "type": "string",
+          "description": "The chosen sleeve style."
+        },
+        "fabricLining": {
+          "type": "string",
+          "description": "The chosen fabric lining type."
+        },
+        "urgencyLevel": {
+          "type": "string",
+          "description": "The requested urgency level for the stitching (e.g., 'Standard', 'Urgent')."
+        },
+        "customerNotes": {
+          "type": "string",
+          "description": "Any additional notes or instructions from the customer."
+        },
+        "referenceImageUrl": {
+          "type": "string",
+          "description": "URL to a reference image uploaded by the customer.",
+          "format": "uri"
+        },
+        "estimatedPrice": {
+          "type": "number",
+          "description": "The auto-calculated estimated price for the custom stitching."
+        },
+        "adminApprovalStatus": {
+          "type": "string",
+          "description": "The approval status by an admin (e.g., 'Pending', 'Approved', 'Rejected')."
+        },
+        "stitchingTimelineStatus": {
+          "type": "string",
+          "description": "The current status in the stitching timeline (e.g., 'Measurements Received', 'Fabric Cut', 'Stitching in Progress')."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the stitching request was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the stitching request was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "stitchingType",
+        "embroideryStyle",
+        "neckDesign",
+        "sleeveStyle",
+        "fabricLining",
+        "urgencyLevel",
+        "estimatedPrice",
+        "adminApprovalStatus",
+        "stitchingTimelineStatus",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "StitchingMeasurement": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "StitchingMeasurement",
+      "type": "object",
+      "description": "Stores individual body measurements provided by customers for custom stitching requests.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the StitchingMeasurement entity."
+        },
+        "stitchingRequestId": {
+          "type": "string",
+          "description": "Reference to the stitching request this measurement belongs to. (Relationship: StitchingRequest 1:N StitchingMeasurement)"
+        },
+        "measurementType": {
+          "type": "string",
+          "description": "The type of measurement (e.g., 'Chest', 'Waist', 'Sleeve Length')."
+        },
+        "value": {
+          "type": "number",
+          "description": "The numerical value of the measurement."
+        },
+        "unit": {
+          "type": "string",
+          "description": "The unit of measurement (e.g., 'inches', 'cm')."
+        },
+        "measurementPhotoUrl": {
+          "type": "string",
+          "description": "URL to a photo illustrating the measurement, if provided.",
+          "format": "uri"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the measurement was recorded.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "stitchingRequestId",
+        "measurementType",
+        "value",
+        "unit",
+        "createdAt"
+      ]
+    },
+    "LoyaltyProgram": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LoyaltyProgram",
+      "type": "object",
+      "description": "Defines the overall loyalty program structure, including points and redemption rules.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the LoyaltyProgram entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the loyalty program (e.g., 'Jasol Maa Royal Points System')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the loyalty program."
+        },
+        "signupPoints": {
+          "type": "number",
+          "description": "Points awarded for signing up."
+        },
+        "firstOrderPoints": {
+          "type": "number",
+          "description": "Points awarded for the first order."
+        },
+        "referralPoints": {
+          "type": "number",
+          "description": "Points awarded for a successful referral."
+        },
+        "pointsPerAmountSpent": {
+          "type": "number",
+          "description": "Number of points awarded per specified currency amount spent."
+        },
+        "amountSpentPerPoint": {
+          "type": "number",
+          "description": "The currency amount spent to earn one point."
+        },
+        "redemptionRate": {
+          "type": "number",
+          "description": "The conversion rate for redeeming points (e.g., 10 points = 1 INR discount)."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "signupPoints",
+        "firstOrderPoints",
+        "referralPoints",
+        "pointsPerAmountSpent",
+        "amountSpentPerPoint",
+        "redemptionRate"
+      ]
+    },
+    "LoyaltyTier": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LoyaltyTier",
+      "type": "object",
+      "description": "Defines the different tiers within a loyalty program (e.g., Silver, Gold, Royal).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the LoyaltyTier entity."
+        },
+        "loyaltyProgramId": {
+          "type": "string",
+          "description": "Reference to the loyalty program this tier belongs to. (Relationship: LoyaltyProgram 1:N LoyaltyTier)"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the loyalty tier (e.g., 'Silver', 'Gold', 'Royal')."
+        },
+        "minPointsRequired": {
+          "type": "number",
+          "description": "The minimum number of points required to reach this tier."
+        },
+        "maxPointsRequired": {
+          "type": "number",
+          "description": "The maximum number of points for this tier (optional, if it's an upper bound)."
+        },
+        "benefits": {
+          "type": "array",
+          "description": "List of benefits associated with this tier.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "badgeImageUrl": {
+          "type": "string",
+          "description": "URL to an image representing the badge for this tier.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "loyaltyProgramId",
+        "name",
+        "minPointsRequired",
+        "benefits"
+      ]
+    },
+    "UserLoyaltyStatus": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserLoyaltyStatus",
+      "type": "object",
+      "description": "Tracks a specific user's progress and status within the loyalty program.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserLoyaltyStatus entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user whose loyalty status is being tracked. (Relationship: UserProfile 1:N UserLoyaltyStatus)"
+        },
+        "loyaltyProgramId": {
+          "type": "string",
+          "description": "Reference to the loyalty program. (Relationship: LoyaltyProgram 1:N UserLoyaltyStatus)"
+        },
+        "currentPoints": {
+          "type": "number",
+          "description": "The user's current accumulated loyalty points."
+        },
+        "lifetimePoints": {
+          "type": "number",
+          "description": "The total points ever earned by the user across their lifetime."
+        },
+        "currentTierId": {
+          "type": "string",
+          "description": "Reference to the user's current loyalty tier. (Relationship: LoyaltyTier 1:N UserLoyaltyStatus)"
+        },
+        "pointsEarnedThisPeriod": {
+          "type": "number",
+          "description": "Points earned within the current period, used for tier qualification."
+        },
+        "lastActivityDate": {
+          "type": "string",
+          "description": "Timestamp of the user's last activity related to loyalty points.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "loyaltyProgramId",
+        "currentPoints",
+        "lifetimePoints",
+        "currentTierId",
+        "lastActivityDate"
+      ]
+    },
+    "Referral": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Referral",
+      "type": "object",
+      "description": "Tracks referral activities between users for the referral program.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Referral entity."
+        },
+        "referrerUserId": {
+          "type": "string",
+          "description": "Reference to the user who referred another user. (Relationship: UserProfile 1:N Referral)"
+        },
+        "referredUserId": {
+          "type": "string",
+          "description": "Optional reference to the user who was referred, once they sign up. (Relationship: UserProfile 1:N Referral)"
+        },
+        "referralCode": {
+          "type": "string",
+          "description": "The unique referral code used for this referral."
+        },
+        "referredEmail": {
+          "type": "string",
+          "description": "The email of the referred person, if an invitation was sent but not yet registered.",
+          "format": "email"
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the referral (e.g., 'Pending', 'Registered', 'First Order Placed')."
+        },
+        "rewardGranted": {
+          "type": "boolean",
+          "description": "Flag indicating if rewards have been granted for this referral."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the referral was initiated.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the referral status was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "referrerUserId",
+        "referralCode",
+        "status",
+        "rewardGranted",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "CommunityPost": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CommunityPost",
+      "type": "object",
+      "description": "Represents a user-generated post in the community section, including photos, videos, and styling inspirations.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CommunityPost entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who created the post. (Relationship: UserProfile 1:N CommunityPost)"
+        },
+        "title": {
+          "type": "string",
+          "description": "An optional title for the community post."
+        },
+        "content": {
+          "type": "string",
+          "description": "The text content of the post, such as styling inspiration or trends."
+        },
+        "imageUrls": {
+          "type": "array",
+          "description": "URLs of images included in the post.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "URL of a video included in the post.",
+          "format": "uri"
+        },
+        "hashTags": {
+          "type": "array",
+          "description": "List of hashtags associated with the post.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "likesCount": {
+          "type": "number",
+          "description": "The number of likes the post has received."
+        },
+        "commentsCount": {
+          "type": "number",
+          "description": "The number of comments the post has received."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the post was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the post was last updated.",
+          "format": "date-time"
+        },
+        "isApproved": {
+          "type": "boolean",
+          "description": "Flag indicating if the post has been approved by an admin."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "content",
+        "likesCount",
+        "commentsCount",
+        "createdAt",
+        "updatedAt",
+        "isApproved"
+      ]
+    },
+    "CommunityComment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CommunityComment",
+      "type": "object",
+      "description": "Represents a comment made on a community post.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CommunityComment entity."
+        },
+        "communityPostId": {
+          "type": "string",
+          "description": "Reference to the community post this comment belongs to. (Relationship: CommunityPost 1:N CommunityComment)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user who made the comment. (Relationship: UserProfile 1:N CommunityComment)"
+        },
+        "content": {
+          "type": "string",
+          "description": "The text content of the comment."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the comment was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "communityPostId",
+        "userId",
+        "content",
+        "createdAt"
+      ]
+    },
+    "ChatSession": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ChatSession",
+      "type": "object",
+      "description": "Manages a live chat conversation session between a user and support/admin.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ChatSession entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user participating in the chat session. (Relationship: UserProfile 1:N ChatSession)"
+        },
+        "adminId": {
+          "type": "string",
+          "description": "Optional reference to the admin user assigned to this chat session. (Relationship: AdminUser 1:N ChatSession)"
+        },
+        "topic": {
+          "type": "string",
+          "description": "The topic or subject of the chat session (e.g., 'Order Support', 'Stitching Query')."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the chat session (e.g., 'Open', 'Closed', 'Pending Admin Response')."
+        },
+        "startedAt": {
+          "type": "string",
+          "description": "Timestamp when the chat session started.",
+          "format": "date-time"
+        },
+        "lastMessageAt": {
+          "type": "string",
+          "description": "Timestamp of the last message sent in the session.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "topic",
+        "status",
+        "startedAt",
+        "lastMessageAt"
+      ]
+    },
+    "ChatMessage": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ChatMessage",
+      "type": "object",
+      "description": "Represents an individual message within a chat session, supporting file sharing.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ChatMessage entity."
+        },
+        "chatSessionId": {
+          "type": "string",
+          "description": "Reference to the chat session this message belongs to. (Relationship: ChatSession 1:N ChatMessage)"
+        },
+        "senderId": {
+          "type": "string",
+          "description": "Reference to the ID of the sender (either UserProfile or AdminUser)."
+        },
+        "senderType": {
+          "type": "string",
+          "description": "The type of sender ('User' or 'Admin')."
+        },
+        "content": {
+          "type": "string",
+          "description": "The text content of the message."
+        },
+        "fileUrls": {
+          "type": "array",
+          "description": "URLs of files attached to the message (e.g., measurement photos).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sentAt": {
+          "type": "string",
+          "description": "Timestamp when the message was sent.",
+          "format": "date-time"
+        },
+        "seenByAdmin": {
+          "type": "boolean",
+          "description": "Flag indicating if the message sent by a user has been seen by an admin."
+        },
+        "seenByUser": {
+          "type": "boolean",
+          "description": "Flag indicating if the message sent by an admin has been seen by the user."
+        }
+      },
+      "required": [
+        "id",
+        "chatSessionId",
+        "senderId",
+        "senderType",
+        "content",
+        "sentAt"
+      ]
+    },
+    "Notification": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Notification",
+      "type": "object",
+      "description": "Manages notifications sent to users, including push notifications and in-app alerts.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Notification entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user receiving the notification. (Relationship: UserProfile 1:N Notification)"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the notification."
+        },
+        "message": {
+          "type": "string",
+          "description": "The main content of the notification message."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of notification (e.g., 'OrderUpdate', 'Promotion', 'StitchingUpdate')."
+        },
+        "targetUrl": {
+          "type": "string",
+          "description": "A deep link URL within the app that the notification opens.",
+          "format": "uri"
+        },
+        "isRead": {
+          "type": "boolean",
+          "description": "Flag indicating if the user has read the notification."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the notification was created/sent.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title",
+        "message",
+        "type",
+        "isRead",
+        "createdAt"
+      ]
+    },
+    "ReturnRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ReturnRequest",
+      "type": "object",
+      "description": "Manages requests from customers to return or exchange products.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ReturnRequest entity."
+        },
+        "orderId": {
+          "type": "string",
+          "description": "Reference to the order from which the item is being returned. (Relationship: Order 1:N ReturnRequest)"
+        },
+        "orderItemId": {
+          "type": "string",
+          "description": "Optional reference to a specific item within the order for partial returns. (Relationship: OrderItem 1:N ReturnRequest)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user making the return request. (Relationship: UserProfile 1:N ReturnRequest)"
+        },
+        "reason": {
+          "type": "string",
+          "description": "The reason for the return (e.g., 'Wrong Size', 'Defective Product', 'Changed Mind')."
+        },
+        "returnPhotos": {
+          "type": "array",
+          "description": "URLs of photos uploaded by the user to support the return request.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the return request (e.g., 'Pending Approval', 'Approved', 'Item Received', 'Refund Processed')."
+        },
+        "requestDate": {
+          "type": "string",
+          "description": "Timestamp when the return request was initiated.",
+          "format": "date-time"
+        },
+        "approvalDate": {
+          "type": "string",
+          "description": "Timestamp when the return request was approved by an admin.",
+          "format": "date-time"
+        },
+        "refundAmount": {
+          "type": "number",
+          "description": "The amount refunded for the return."
+        },
+        "refundTransactionId": {
+          "type": "string",
+          "description": "Reference to the payment transaction for the refund. (Relationship: PaymentTransaction 1:N ReturnRequest)"
+        },
+        "replacementOrderId": {
+          "type": "string",
+          "description": "Optional reference to a new order created as a replacement. (Relationship: Order 1:N ReturnRequest)"
+        },
+        "adminNotes": {
+          "type": "string",
+          "description": "Internal notes from admin regarding the return request."
+        }
+      },
+      "required": [
+        "id",
+        "orderId",
+        "userId",
+        "reason",
+        "status",
+        "requestDate"
+      ]
+    },
+    "Invoice": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Invoice",
+      "type": "object",
+      "description": "Stores details about invoices generated for completed orders.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Invoice entity."
+        },
+        "orderId": {
+          "type": "string",
+          "description": "Reference to the order this invoice belongs to. (Relationship: Order 1:N Invoice)"
+        },
+        "invoiceNumber": {
+          "type": "string",
+          "description": "The unique, human-readable invoice number."
+        },
+        "issueDate": {
+          "type": "string",
+          "description": "The date and time when the invoice was issued.",
+          "format": "date-time"
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "The total amount listed on the invoice."
+        },
+        "invoicePdfUrl": {
+          "type": "string",
+          "description": "URL to the generated PDF document of the invoice.",
+          "format": "uri"
+        },
+        "billingAddressId": {
+          "type": "string",
+          "description": "Reference to the billing address on the invoice. (Relationship: Address 1:N Invoice)"
+        },
+        "shippingAddressId": {
+          "type": "string",
+          "description": "Reference to the shipping address on the invoice. (Relationship: Address 1:N Invoice)"
+        }
+      },
+      "required": [
+        "id",
+        "orderId",
+        "invoiceNumber",
+        "issueDate",
+        "totalAmount",
+        "invoicePdfUrl",
+        "billingAddressId",
+        "shippingAddressId"
+      ]
+    },
+    "PincodeAvailability": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PincodeAvailability",
+      "type": "object",
+      "description": "Provides detailed information about delivery availability and options for specific pincodes.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the PincodeAvailability entity."
+        },
+        "pincode": {
+          "type": "string",
+          "description": "The postal code for which availability is defined."
+        },
+        "isAvailable": {
+          "type": "boolean",
+          "description": "Flag indicating if delivery is available to this pincode."
+        },
+        "minDeliveryDays": {
+          "type": "number",
+          "description": "Minimum number of days for standard delivery to this pincode."
+        },
+        "maxDeliveryDays": {
+          "type": "number",
+          "description": "Maximum number of days for standard delivery to this pincode."
+        },
+        "expressDeliveryAvailable": {
+          "type": "boolean",
+          "description": "Flag indicating if express delivery is an option for this pincode."
+        },
+        "cashOnDeliveryAvailable": {
+          "type": "boolean",
+          "description": "Flag indicating if Cash on Delivery (COD) is available for this pincode."
+        },
+        "shippingCharges": {
+          "type": "number",
+          "description": "Additional shipping charges for this pincode, if any."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the pincode availability record was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the pincode availability record was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "pincode",
+        "isAvailable",
+        "minDeliveryDays",
+        "maxDeliveryDays",
+        "expressDeliveryAvailable",
+        "cashOnDeliveryAvailable",
+        "shippingCharges",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ProductRecommendation": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ProductRecommendation",
+      "type": "object",
+      "description": "Stores personalized product recommendations generated for users by AI or other tools.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ProductRecommendation entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user for whom the recommendation is made. (Relationship: UserProfile 1:N ProductRecommendation)"
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to the recommended product. (Relationship: Product 1:N ProductRecommendation)"
+        },
+        "recommendationType": {
+          "type": "string",
+          "description": "The type of recommendation (e.g., 'basedOnBrowsing', 'frequentlyBought', 'styleSuggestion')."
+        },
+        "score": {
+          "type": "number",
+          "description": "A numerical score indicating the relevance or confidence of the recommendation."
+        },
+        "generatedAt": {
+          "type": "string",
+          "description": "Timestamp when the recommendation was generated.",
+          "format": "date-time"
+        },
+        "seenByUser": {
+          "type": "boolean",
+          "description": "Flag indicating if the user has seen this recommendation."
+        },
+        "interactedWith": {
+          "type": "boolean",
+          "description": "Flag indicating if the user interacted with this recommendation (e.g., clicked, added to cart)."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "productId",
+        "recommendationType",
+        "score",
+        "generatedAt"
+      ]
+    },
+    "Banner": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Banner",
+      "type": "object",
+      "description": "Defines banners for dynamic homepage content, including hero banners, flash sales, and offers.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Banner entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title or headline of the banner."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL to the image displayed on the banner.",
+          "format": "uri"
+        },
+        "actionUrl": {
+          "type": "string",
+          "description": "The URL or deep link to navigate to when the banner is clicked.",
+          "format": "uri"
+        },
+        "bannerType": {
+          "type": "string",
+          "description": "The type of banner (e.g., 'Hero', 'FlashSale', 'FestivalOffer')."
+        },
+        "displayOrder": {
+          "type": "number",
+          "description": "The order in which the banner should be displayed."
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Flag indicating if the banner is currently active and visible."
+        },
+        "validFrom": {
+          "type": "string",
+          "description": "The date and time from which the banner should be active.",
+          "format": "date-time"
+        },
+        "validUntil": {
+          "type": "string",
+          "description": "The date and time until which the banner should be active.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "imageUrl",
+        "actionUrl",
+        "bannerType",
+        "displayOrder",
+        "isActive"
+      ]
+    },
+    "HomePageSection": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "HomePageSection",
+      "type": "object",
+      "description": "Configures dynamic sections on the application's homepage, displaying various types of content.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the HomePageSection entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the homepage section (e.g., 'Trending Bridal Collection', 'Today's Deal')."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of content displayed in the section (e.g., 'ProductGrid', 'BannerCarousel', 'ShowcaseFeed')."
+        },
+        "displayOrder": {
+          "type": "number",
+          "description": "The order in which this section appears on the homepage."
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Flag indicating if this homepage section is currently active and visible."
+        },
+        "productIds": {
+          "type": "array",
+          "description": "References to products featured in this section (N:N relationship with Product).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bannerIds": {
+          "type": "array",
+          "description": "References to banners featured in this section (N:N relationship with Banner).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "communityPostIds": {
+          "type": "array",
+          "description": "References to community posts featured in this section (N:N relationship with CommunityPost).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the homepage section was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the homepage section was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "type",
+        "displayOrder",
+        "isActive",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "CustomerNote": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CustomerNote",
+      "type": "object",
+      "description": "Stores internal notes about customers, created by admin users for CRM purposes.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CustomerNote entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the customer profile this note is about. (Relationship: UserProfile 1:N CustomerNote)"
+        },
+        "adminId": {
+          "type": "string",
+          "description": "Reference to the admin user who created this note. (Relationship: AdminUser 1:N CustomerNote)"
+        },
+        "noteContent": {
+          "type": "string",
+          "description": "The content of the customer note."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the note was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "adminId",
+        "noteContent",
+        "createdAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores individual user profiles. Access is restricted to the authenticated user matching the 'userId' in the path. All user-specific subcollections leverage this path-based authorization. Includes denormalized 'loyaltyStatusId' and 'referralCode' for quick access.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/admin_roles/{adminId}",
+        "definition": {
+          "entityName": "AdminUser",
+          "schema": {
+            "$ref": "#/backend/entities/AdminUser"
+          },
+          "description": "Defines administrative users and their roles. This is a crucial collection for Database Access Control (DBAC). Rules will check for existence of 'request.auth.uid' in this collection to grant admin privileges. Regular users have no access. The 'adminId' is the user's UID.",
+          "params": [
+            {
+              "name": "adminId",
+              "description": "The unique Firebase Authentication UID of the admin user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/products/{productId}",
+        "definition": {
+          "entityName": "Product",
+          "schema": {
+            "$ref": "#/backend/entities/Product"
+          },
+          "description": "Contains publicly viewable product details. Public users have read-only access. Only authenticated admin users can create, update, or delete products. Includes denormalized 'categoryId', 'averageRating', 'totalReviews', 'isLimitedStock', 'isHotSelling', 'isNewArrival' for display and filtering.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "The unique identifier for the product."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/products/{productId}/images/{imageId}",
+        "definition": {
+          "entityName": "ProductImage",
+          "schema": {
+            "$ref": "#/backend/entities/ProductImage"
+          },
+          "description": "Stores image and video assets for a specific product. Public users have read-only access. Only admin users can manage product images. Includes denormalized 'productId' for linking and 'isHeroImage', 'is360Image' for display logic.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "The unique identifier of the parent product."
+            },
+            {
+              "name": "imageId",
+              "description": "The unique identifier for the product image."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/categories/{categoryId}",
+        "definition": {
+          "entityName": "Category",
+          "schema": {
+            "$ref": "#/backend/entities/Category"
+          },
+          "description": "Defines product categories for organization. Public users have read-only access. Only admin users can manage categories. Includes denormalized 'parentCategoryId' for hierarchical structuring.",
+          "params": [
+            {
+              "name": "categoryId",
+              "description": "The unique identifier for the category."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/products/{productId}/reviews/{reviewId}",
+        "definition": {
+          "entityName": "Review",
+          "schema": {
+            "$ref": "#/backend/entities/Review"
+          },
+          "description": "Stores customer reviews for products. Public users can read. Authenticated users can create, read, update, and delete their own reviews. Admins can manage all reviews. Includes denormalized 'userId' for ownership and 'productId' for context.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "The unique identifier of the product being reviewed."
+            },
+            {
+              "name": "reviewId",
+              "description": "The unique identifier for the review."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/products/{productId}/qna/{qaId}",
+        "definition": {
+          "entityName": "QuestionAndAnswer",
+          "schema": {
+            "$ref": "#/backend/entities/QuestionAndAnswer"
+          },
+          "description": "Manages customer questions and answers for products. Public users can read. Authenticated users can ask questions and manage their own questions. Admins can answer and manage all Q&A. Includes denormalized 'userId' for ownership and 'adminId' for answers.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "The unique identifier of the product the question is about."
+            },
+            {
+              "name": "qaId",
+              "description": "The unique identifier for the question and answer entry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/cart",
+        "definition": {
+          "entityName": "Cart",
+          "schema": {
+            "$ref": "#/backend/entities/Cart"
+          },
+          "description": "Represents a single shopping cart for the user. Accessible only by the authenticated user matching 'userId'. This is a singleton document per user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/cart/items/{cartItemId}",
+        "definition": {
+          "entityName": "CartItem",
+          "schema": {
+            "$ref": "#/backend/entities/CartItem"
+          },
+          "description": "Contains items added to the user's shopping cart. Accessible only by the authenticated user matching 'userId'. Includes denormalized 'productId' and 'stitchingRequestId' for item details.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            },
+            {
+              "name": "cartItemId",
+              "description": "The unique identifier for the cart item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/orders/{orderId}",
+        "definition": {
+          "entityName": "Order",
+          "schema": {
+            "$ref": "#/backend/entities/Order"
+          },
+          "description": "Represents a user's finalized purchase. Accessible only by the authenticated user matching 'userId' or by admin users. Includes denormalized 'shippingAddressId', 'billingAddressId', 'couponId', 'invoiceId', 'deliveryOtp', 'loyaltyPointsEarned', 'loyaltyPointsUsed', 'referralCodeUsed' for comprehensive order details.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user who placed the order."
+            },
+            {
+              "name": "orderId",
+              "description": "The unique identifier for the order."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/orders/{orderId}/items/{orderItemId}",
+        "definition": {
+          "entityName": "OrderItem",
+          "schema": {
+            "$ref": "#/backend/entities/OrderItem"
+          },
+          "description": "Details individual products within a placed order. Accessible only by the authenticated user matching 'userId' or by admin users. Includes denormalized 'productId' and 'stitchingRequestId' for specific item configuration.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user who placed the order."
+            },
+            {
+              "name": "orderId",
+              "description": "The unique identifier of the parent order."
+            },
+            {
+              "name": "orderItemId",
+              "description": "The unique identifier for the order item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/addresses/{addressId}",
+        "definition": {
+          "entityName": "Address",
+          "schema": {
+            "$ref": "#/backend/entities/Address"
+          },
+          "description": "Stores user's shipping and billing addresses. Accessible only by the authenticated user matching 'userId'. Includes denormalized 'isDefault' and 'addressType' for user preference management.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            },
+            {
+              "name": "addressId",
+              "description": "The unique identifier for the address."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/coupons/{couponId}",
+        "definition": {
+          "entityName": "Coupon",
+          "schema": {
+            "$ref": "#/backend/entities/Coupon"
+          },
+          "description": "Defines discount coupons. Public users can read active coupons. Only admin users can manage coupons. Includes denormalized 'isActive', 'validFrom', 'validUntil', 'usageLimit', 'perUserUsageLimit' for authorization independence and efficient querying of available coupons.",
+          "params": [
+            {
+              "name": "couponId",
+              "description": "The unique identifier for the coupon."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/orders/{orderId}/transactions/{transactionId}",
+        "definition": {
+          "entityName": "PaymentTransaction",
+          "schema": {
+            "$ref": "#/backend/entities/PaymentTransaction"
+          },
+          "description": "Records details of payment transactions. Accessible only by the authenticated user matching 'userId' or by admin users. Includes denormalized 'orderId' for linking and 'status', 'method' for transaction tracking.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user associated with the order."
+            },
+            {
+              "name": "orderId",
+              "description": "The unique identifier of the parent order."
+            },
+            {
+              "name": "transactionId",
+              "description": "The unique identifier for the payment transaction."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/orders/{orderId}/shipment",
+        "definition": {
+          "entityName": "Shipment",
+          "schema": {
+            "$ref": "#/backend/entities/Shipment"
+          },
+          "description": "Manages shipping and delivery tracking information for an order. Accessible only by the authenticated user matching 'userId' or by admin users. This is a singleton document per order. Includes denormalized 'orderId', 'trackingNumber', 'currentStatus', 'estimatedDeliveryDate' for user and admin tracking.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user associated with the order."
+            },
+            {
+              "name": "orderId",
+              "description": "The unique identifier of the parent order."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/wishlists/{wishlistId}",
+        "definition": {
+          "entityName": "Wishlist",
+          "schema": {
+            "$ref": "#/backend/entities/Wishlist"
+          },
+          "description": "Allows users to create and manage multiple wishlists (folders). Accessible only by the authenticated user matching 'userId'.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            },
+            {
+              "name": "wishlistId",
+              "description": "The unique identifier for the wishlist."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/wishlists/{wishlistId}/items/{wishlistItemId}",
+        "definition": {
+          "entityName": "WishlistItem",
+          "schema": {
+            "$ref": "#/backend/entities/WishlistItem"
+          },
+          "description": "Represents a single product within a user's wishlist. Accessible only by the authenticated user matching 'userId'. Includes denormalized 'productId' for item details.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            },
+            {
+              "name": "wishlistId",
+              "description": "The unique identifier of the parent wishlist."
+            },
+            {
+              "name": "wishlistItemId",
+              "description": "The unique identifier for the wishlist item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/stitchingRequests/{requestId}",
+        "definition": {
+          "entityName": "StitchingRequest",
+          "schema": {
+            "$ref": "#/backend/entities/StitchingRequest"
+          },
+          "description": "Manages custom stitching requests. Accessible only by the authenticated user matching 'userId' or by admin users. Includes denormalized 'productId', 'adminApprovalStatus', 'stitchingTimelineStatus' for tracking and management.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            },
+            {
+              "name": "requestId",
+              "description": "The unique identifier for the stitching request."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/stitchingRequests/{requestId}/measurements/{measurementId}",
+        "definition": {
+          "entityName": "StitchingMeasurement",
+          "schema": {
+            "$ref": "#/backend/entities/StitchingMeasurement"
+          },
+          "description": "Stores individual body measurements for a specific stitching request. Accessible only by the authenticated user matching 'userId' or by admin users. Includes denormalized 'stitchingRequestId' for parent linkage.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            },
+            {
+              "name": "requestId",
+              "description": "The unique identifier of the parent stitching request."
+            },
+            {
+              "name": "measurementId",
+              "description": "The unique identifier for the measurement."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/loyalty_program/global_config",
+        "definition": {
+          "entityName": "LoyaltyProgram",
+          "schema": {
+            "$ref": "#/backend/entities/LoyaltyProgram"
+          },
+          "description": "Defines the global rules and configuration for the loyalty program. Publicly readable for users to understand the program. Only admin users can modify. This is a singleton document."
+        }
+      },
+      {
+        "path": "/loyalty_program/global_config/tiers/{tierId}",
+        "definition": {
+          "entityName": "LoyaltyTier",
+          "schema": {
+            "$ref": "#/backend/entities/LoyaltyTier"
+          },
+          "description": "Defines the different tiers within the loyalty program. Publicly readable. Only admin users can modify. Includes denormalized 'loyaltyProgramId' for linkage.",
+          "params": [
+            {
+              "name": "tierId",
+              "description": "The unique identifier for the loyalty tier."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/loyaltyStatus",
+        "definition": {
+          "entityName": "UserLoyaltyStatus",
+          "schema": {
+            "$ref": "#/backend/entities/UserLoyaltyStatus"
+          },
+          "description": "Tracks a specific user's loyalty points and tier status. Accessible only by the authenticated user matching 'userId' or by admin users. This is a singleton document per user. Includes denormalized 'loyaltyProgramId' and 'currentTierId' for comprehensive status.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{referrerUserId}/referrals/{referralId}",
+        "definition": {
+          "entityName": "Referral",
+          "schema": {
+            "$ref": "#/backend/entities/Referral"
+          },
+          "description": "Tracks referral activities initiated by a user. Accessible only by the authenticated user matching 'referrerUserId' or by admin users. Includes denormalized 'referredUserId' and 'referralCode' for tracking referral chains.",
+          "params": [
+            {
+              "name": "referrerUserId",
+              "description": "The unique Firebase Authentication UID of the user who made the referral."
+            },
+            {
+              "name": "referralId",
+              "description": "The unique identifier for the referral entry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/community_posts/{postId}",
+        "definition": {
+          "entityName": "CommunityPost",
+          "schema": {
+            "$ref": "#/backend/entities/CommunityPost"
+          },
+          "description": "Represents user-generated posts in the community section. Publicly readable if 'isApproved' is true. Authenticated users can create and manage their own posts. Admin users can manage all posts. Includes denormalized 'userId' for ownership and 'isApproved' for authorization independence in public listings.",
+          "params": [
+            {
+              "name": "postId",
+              "description": "The unique identifier for the community post."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/community_posts/{postId}/comments/{commentId}",
+        "definition": {
+          "entityName": "CommunityComment",
+          "schema": {
+            "$ref": "#/backend/entities/CommunityComment"
+          },
+          "description": "Represents comments on community posts. Publicly readable if the parent post is approved. Authenticated users can create and manage their own comments. Admin users can delete any comment. Includes denormalized 'userId' for ownership and 'communityPostId' for context.",
+          "params": [
+            {
+              "name": "postId",
+              "description": "The unique identifier of the parent community post."
+            },
+            {
+              "name": "commentId",
+              "description": "The unique identifier for the comment."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/chatSessions/{sessionId}",
+        "definition": {
+          "entityName": "ChatSession",
+          "schema": {
+            "$ref": "#/backend/entities/ChatSession"
+          },
+          "description": "Manages live chat conversations. Accessible only by the authenticated user matching 'userId' or by admin users (especially the 'adminId' assigned). Includes denormalized 'adminId' for assignment, 'topic', and 'status' for session management and authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user involved in the chat."
+            },
+            {
+              "name": "sessionId",
+              "description": "The unique identifier for the chat session."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/chatSessions/{sessionId}/messages/{messageId}",
+        "definition": {
+          "entityName": "ChatMessage",
+          "schema": {
+            "$ref": "#/backend/entities/ChatMessage"
+          },
+          "description": "Contains individual messages within a chat session. Accessible only by the authenticated user matching 'userId' or by authorized admin users. Includes denormalized 'senderId' and 'senderType' for clear attribution and 'seenByAdmin', 'seenByUser' for status.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user involved in the chat."
+            },
+            {
+              "name": "sessionId",
+              "description": "The unique identifier of the parent chat session."
+            },
+            {
+              "name": "messageId",
+              "description": "The unique identifier for the chat message."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/notifications/{notificationId}",
+        "definition": {
+          "entityName": "Notification",
+          "schema": {
+            "$ref": "#/backend/entities/Notification"
+          },
+          "description": "Manages notifications sent to users. Accessible only by the authenticated user matching 'userId'. Admin users can write (send) notifications to specific users. Includes denormalized 'isRead' for status and 'type' for categorization.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the recipient user."
+            },
+            {
+              "name": "notificationId",
+              "description": "The unique identifier for the notification."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/returnRequests/{requestId}",
+        "definition": {
+          "entityName": "ReturnRequest",
+          "schema": {
+            "$ref": "#/backend/entities/ReturnRequest"
+          },
+          "description": "Manages customer return/exchange requests. Accessible only by the authenticated user matching 'userId' or by admin users. Includes denormalized 'orderId', 'orderItemId', 'reason', 'status', 'refundTransactionId', 'replacementOrderId' for comprehensive tracking and processing.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user making the request."
+            },
+            {
+              "name": "requestId",
+              "description": "The unique identifier for the return request."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/orders/{orderId}/invoice",
+        "definition": {
+          "entityName": "Invoice",
+          "schema": {
+            "$ref": "#/backend/entities/Invoice"
+          },
+          "description": "Stores details about invoices for completed orders. Accessible only by the authenticated user matching 'userId' or by admin users. This is a singleton document per order. Includes denormalized 'orderId', 'invoiceNumber', 'totalAmount', 'invoicePdfUrl', 'billingAddressId', 'shippingAddressId' for audit and user access.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user associated with the order."
+            },
+            {
+              "name": "orderId",
+              "description": "The unique identifier of the parent order."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/pincode_availability/{pincodeId}",
+        "definition": {
+          "entityName": "PincodeAvailability",
+          "schema": {
+            "$ref": "#/backend/entities/PincodeAvailability"
+          },
+          "description": "Provides detailed information about delivery availability for specific pincodes. Publicly readable for quick checks. Only admin users can manage. Includes denormalized 'pincode', 'isAvailable', 'expressDeliveryAvailable', 'cashOnDeliveryAvailable', 'shippingCharges' for transparent delivery options.",
+          "params": [
+            {
+              "name": "pincodeId",
+              "description": "The unique identifier for the pincode availability record (could be the pincode itself)."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/recommendations/{recommendationId}",
+        "definition": {
+          "entityName": "ProductRecommendation",
+          "schema": {
+            "$ref": "#/backend/entities/ProductRecommendation"
+          },
+          "description": "Stores personalized product recommendations generated for users. Accessible only by the authenticated user matching 'userId'. AI/System processes generate these, with admin oversight. Includes denormalized 'productId', 'recommendationType', 'score', 'seenByUser', 'interactedWith' for tracking and relevance.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the user receiving the recommendation."
+            },
+            {
+              "name": "recommendationId",
+              "description": "The unique identifier for the product recommendation."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/banners/{bannerId}",
+        "definition": {
+          "entityName": "Banner",
+          "schema": {
+            "$ref": "#/backend/entities/Banner"
+          },
+          "description": "Defines dynamic banners for the homepage. Publicly readable if 'isActive' is true and within valid dates. Only admin users can manage. Includes denormalized 'bannerType', 'displayOrder', 'isActive', 'validFrom', 'validUntil' for dynamic homepage content management.",
+          "params": [
+            {
+              "name": "bannerId",
+              "description": "The unique identifier for the banner."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/homepage_sections/{sectionId}",
+        "definition": {
+          "entityName": "HomePageSection",
+          "schema": {
+            "$ref": "#/backend/entities/HomePageSection"
+          },
+          "description": "Configures dynamic sections on the homepage. Publicly readable if 'isActive' is true. Only admin users can manage. Includes denormalized 'type', 'displayOrder', 'isActive', 'productIds', 'bannerIds', 'communityPostIds' to define dynamic content layout and enable QAPs for active sections.",
+          "params": [
+            {
+              "name": "sectionId",
+              "description": "The unique identifier for the homepage section."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/customerNotes/{noteId}",
+        "definition": {
+          "entityName": "CustomerNote",
+          "schema": {
+            "$ref": "#/backend/entities/CustomerNote"
+          },
+          "description": "Stores internal notes about customers, exclusively for CRM by admin users. No access for regular users. Accessible only by admin users. Includes denormalized 'adminId' for attribution and 'userId' for context.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique Firebase Authentication UID of the customer this note is about."
+            },
+            {
+              "name": "noteId",
+              "description": "The unique identifier for the customer note."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure for JasolMAboutique is designed to be highly secure, scalable, and debuggable, adhering to the core principles and mandates. \n\n**Authorization Independence (CRITICAL) and Denormalization Strategy (Mandate A):**\nThis design primarily achieves authorization independence through two key strategies:\n1.  **Path-Based Ownership:** For all user-specific data, collections are nested directly under `/users/{userId}`. Examples include `/users/{userId}/cart`, `/users/{userId}/orders/{orderId}`, `/users/{userId}/addresses/{addressId}`, and so forth. In Firestore security rules, the `userId` wildcard in the path can be directly compared with `request.auth.uid`. This makes rules like `allow read, write: if request.auth.uid == userId;` atomic and independent of any `get()` calls to parent documents or other collections. This eliminates potential security vulnerabilities and performance bottlenecks associated with hierarchical authorization checks.\n2.  **Explicit Authorization Fields for Shared/Public Data:** For entities that are either public, collaborative, or require admin oversight, authorization context is denormalized directly into the document. \n    *   **Public Content with Owner/Approval:** For `CommunityPost` (`/community_posts/{postId}`), the `userId` (owner) and `isApproved` status are within the document. This allows public reads for approved posts, and owner/admin writes, all without `get()` calls. Similarly, `CommunityComment` includes `userId`.\n    *   **Admin Roles (DBAC):** Admin users are identified by their `uid` existing in a dedicated collection: `/admin_roles/{adminId}`. Firestore rules can check `exists(/databases/$(database)/documents/admin_roles/$(request.auth.uid))` to grant administrative privileges without relying on custom claims or document reads on individual user profiles. This is an explicit, fast, and debuggable way to manage roles.\n    *   **Chat Sessions:** `ChatSession` documents include `userId` (in path) and an optional `adminId` for assignment. `ChatMessage` also stores `senderId` and `senderType`. This denormalization means rules can determine access based on the message content itself or the direct parent, not a distant parent.\n\n**QAPs (Rules are not Filters) through Structural Segregation (Mandate B):**\nThe data structure prioritizes **Query As Authorization Policies (QAPs)** by ensuring that `list` operations naturally return only authorized data, thereby preventing rules from acting as filters (which are inefficient and insecure).\n1.  **Public Collections:** Global collections like `/products`, `/categories`, `/banners`, `/homepage_sections`, `/coupons`, and `/pincode_availability` are designed for public read access. `isApproved` or `isActive` flags within documents ensure that `list` queries on these collections only return publicly relevant items, while admin users have write access.\n2.  **User-Scoped Collections:** All collections under `/users/{userId}` ensure that when a user queries for `orders`, `carts`, `wishlists`, or `stitchingRequests`, they inherently only receive *their own* data. The `userId` in the path acts as a natural, efficient, and secure filter for `list` operations.\n3.  **Community Posts:** By having `/community_posts/{postId}` as a top-level collection, `list` operations for public viewing can query for `isApproved == true`, which is efficient and rule-compliant. Individual users can still query for *their own* posts (`userId == request.auth.uid`) regardless of approval status. This segregation of security posture (public vs. owner) within the same collection is managed by the `isApproved` field.\n\nThis robust structure minimizes the complexity of security rules, maximizes performance for common queries, and significantly enhances debuggability and scalability."
+  }
+}

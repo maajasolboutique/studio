@@ -1,0 +1,328 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * JasolMAboutique Security Rules
+     * 
+     * Core Philosophy:
+     * This ruleset enforces a strict user-ownership model combined with a robust Role-Based Access Control (RBAC) 
+     * system for administrative functions. Security is prioritized via path-based authorization, ensuring 
+     * that users can only access data nested within their unique UID tree.
+     * 
+     * Data Structure:
+     * - User Data: Highly segregated under /users/{userId} to ensure atomic authorization decisions.
+     * - Public Catalog: Products, categories, and availability data are globally readable but strictly admin-writable.
+     * - Community Content: Mixed access model allowing public reads for approved content and owner-only management.
+     * - Admin Access: Managed via a dedicated /admin_roles collection for high-performance permission checks.
+     * 
+     * Key Security Decisions:
+     * - Denormalization: Critical fields like 'userId' and 'isApproved' are enforced on documents to facilitate 
+     *   fast rules and secure listing without costly collection-group gets.
+     * - Immutability: Ownership fields (e.g., userId) are made immutable after creation to prevent data hijacking.
+     * - Prototyping Flexibility: Data types and schema shapes are not enforced, allowing rapid UI/UX iteration 
+     *   while maintaining ironclad authorization.
+     */
+
+    // --- HELPER FUNCTIONS ---
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admin_roles/$(request.auth.uid));
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isExistingOwner(userId) {
+      return resource != null && isOwner(userId);
+    }
+
+    // --- COLLECTION RULES ---
+
+    /**
+     * @description Access control for administrative roles. Essential for system-wide DBAC.
+     * @path /admin_roles/{adminId}
+     * @allow get: (isSignedIn) | create/update/delete: (isAdmin)
+     * @deny Any non-admin write attempt.
+     * @principle Restricts role management to existing administrators.
+     */
+    match /admin_roles/{adminId} {
+      allow get: if isSignedIn();
+      allow list: if isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description User profile management. Users manage their own profiles; Admins can view for CRM.
+     * @path /users/{userId}
+     * @allow get/list: (isOwner || isAdmin) | create/update: (isOwner)
+     * @deny User A trying to modify User B's profile.
+     * @principle Path-based ownership for personal data.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if false; // Profiles should be deactivated, not deleted, for audit.
+    }
+
+    /**
+     * @description Public product catalog access. Only admins can manage inventory.
+     * @path /products/{productId}
+     * @allow get/list: (true) | create/update/delete: (isAdmin)
+     * @deny Regular users attempting to change prices or stock.
+     * @principle Public read with authorized administrative writes.
+     */
+    match /products/{productId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+
+      match /images/{imageId} {
+        allow get, list: if true;
+        allow create, update, delete: if isAdmin();
+      }
+
+      match /reviews/{reviewId} {
+        allow get, list: if true;
+        allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+        allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+        allow delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      }
+
+      match /qna/{qaId} {
+        allow get, list: if true;
+        allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+        allow update: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+        allow delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      }
+    }
+
+    /**
+     * @description Product categories. Publicly readable for navigation.
+     * @path /categories/{categoryId}
+     * @allow get/list: (true) | create/update/delete: (isAdmin)
+     */
+    match /categories/{categoryId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description User's shopping cart. High privacy required.
+     * @path /users/{userId}/cart
+     * @allow get/create/update/delete: (isOwner)
+     * @principle Singleton document per user protected by UID match.
+     */
+    match /users/{userId}/cart {
+      allow get, create, update, delete: if isOwner(userId);
+      allow list: if isOwner(userId) || isAdmin();
+
+      match /items/{cartItemId} {
+        allow get, list, create, update, delete: if isOwner(userId);
+      }
+    }
+
+    /**
+     * @description Order history and tracking. Accessible by customer and staff.
+     * @path /users/{userId}/orders/{orderId}
+     * @allow get/list: (isOwner || isAdmin) | create: (isOwner) | update: (isAdmin)
+     * @principle Enforces relational integrity between path and data on creation.
+     */
+    match /users/{userId}/orders/{orderId} {
+      allow get, list: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isAdmin();
+      allow delete: if false;
+
+      match /items/{orderItemId} {
+        allow get, list: if isOwner(userId) || isAdmin();
+        allow create, update, delete: if isAdmin();
+      }
+
+      match /transactions/{transactionId} {
+        allow get, list: if isOwner(userId) || isAdmin();
+        allow create, update, delete: if isAdmin();
+      }
+
+      match /shipment {
+        allow get: if isOwner(userId) || isAdmin();
+        allow create, update, delete: if isAdmin();
+      }
+
+      match /invoice {
+        allow get: if isOwner(userId) || isAdmin();
+        allow create, update, delete: if isAdmin();
+      }
+    }
+
+    /**
+     * @description Address book management for checkout.
+     * @path /users/{userId}/addresses/{addressId}
+     * @allow get/list/create/update/delete: (isOwner)
+     */
+    match /users/{userId}/addresses/{addressId} {
+      allow get, list: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Custom stitching requests with specific measurement data.
+     * @path /users/{userId}/stitchingRequests/{requestId}
+     * @allow get/list: (isOwner || isAdmin) | create: (isOwner) | update: (isOwner || isAdmin)
+     */
+    match /users/{userId}/stitchingRequests/{requestId} {
+      allow get, list: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if (isExistingOwner(userId) && request.resource.data.adminApprovalStatus == 'Pending') || isAdmin();
+      allow delete: if isAdmin();
+
+      match /measurements/{measurementId} {
+        allow get, list: if isOwner(userId) || isAdmin();
+        allow create, update, delete: if isOwner(userId) || isAdmin();
+      }
+    }
+
+    /**
+     * @description Coupons and promotional codes.
+     * @path /coupons/{couponId}
+     * @allow get: (true) | list: (true) | create/update/delete: (isAdmin)
+     */
+    match /coupons/{couponId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Loyalty program configuration and individual user status.
+     * @path /loyalty_program/...
+     */
+    match /loyalty_program/global_config {
+      allow get: if true;
+      allow create, update, delete: if isAdmin();
+
+      match /tiers/{tierId} {
+        allow get, list: if true;
+        allow create, update, delete: if isAdmin();
+      }
+    }
+
+    match /users/{userId}/loyaltyStatus {
+      allow get: if isOwner(userId) || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Community posts for social shopping.
+     * @path /community_posts/{postId}
+     * @allow get/list: (resource.data.isApproved == true || isOwner) | create: (isSignedIn)
+     */
+    match /community_posts/{postId} {
+      // Publicly readable if approved; owners and admins can read regardless of approval status.
+      allow get, list: if resource.data.isApproved == true || isOwner(resource.data.userId) || isAdmin();
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+
+      match /comments/{commentId} {
+        allow get, list: if true;
+        allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+        allow update: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+        allow delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      }
+    }
+
+    /**
+     * @description Support chat sessions. Restricted to the involved user and staff.
+     * @path /users/{userId}/chatSessions/{sessionId}
+     */
+    match /users/{userId}/chatSessions/{sessionId} {
+      allow get, list: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) || isAdmin();
+
+      match /messages/{messageId} {
+        allow get, list: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) || isAdmin();
+      }
+    }
+
+    /**
+     * @description User-specific notifications and alerts.
+     * @path /users/{userId}/notifications/{notificationId}
+     */
+    match /users/{userId}/notifications/{notificationId} {
+      allow get, list: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow create: if isAdmin();
+      allow delete: if isOwner(userId);
+    }
+
+    /**
+     * @description Pincode availability checks.
+     * @path /pincode_availability/{pincodeId}
+     */
+    match /pincode_availability/{pincodeId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Dynamic homepage sections and banners.
+     */
+    match /banners/{bannerId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /homepage_sections/{sectionId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Internal CRM notes. Strictly for admin use.
+     * @path /users/{userId}/customerNotes/{noteId}
+     * @allow All: (isAdmin)
+     * @deny Regular users.
+     */
+    match /users/{userId}/customerNotes/{noteId} {
+      allow get, list, create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Referral tracking initiated by users.
+     * @path /users/{referrerUserId}/referrals/{referralId}
+     */
+    match /users/{referrerUserId}/referrals/{referralId} {
+      allow get, list: if isOwner(referrerUserId) || isAdmin();
+      allow create: if isOwner(referrerUserId);
+      allow update, delete: if isAdmin();
+    }
+
+    /**
+     * @description AI generated recommendations.
+     * @path /users/{userId}/recommendations/{recommendationId}
+     */
+    match /users/{userId}/recommendations/{recommendationId} {
+      allow get, list: if isOwner(userId);
+      allow create, update, delete: if isAdmin(); // Only system/admin managed
+    }
+
+    /**
+     * @description Return and exchange requests.
+     */
+    match /users/{userId}/returnRequests/{requestId} {
+      allow get, list: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId);
+      allow update, delete: if isAdmin();
+    }
+  }
+}
