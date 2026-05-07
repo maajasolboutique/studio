@@ -47,7 +47,12 @@ export type ConversationalProductSearchOutput = z.infer<
 export async function conversationalProductSearch(
   input: ConversationalProductSearchInput
 ): Promise<ConversationalProductSearchOutput> {
-  return conversationalProductSearchFlow(input);
+  try {
+    return await conversationalProductSearchFlow(input);
+  } catch (error) {
+    console.error('Conversational search failed (falling back):', error);
+    return { refinedQuery: input.query, productSuggestions: [] };
+  }
 }
 
 const prompt = ai.definePrompt({
@@ -71,10 +76,15 @@ const conversationalProductSearchFlow = ai.defineFlow(
     outputSchema: ConversationalProductSearchOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input);
-    if (!output) {
-      throw new Error('Failed to generate conversational product search response.');
+    try {
+      const { output } = await prompt(input);
+      if (!output) {
+        return { refinedQuery: input.query, productSuggestions: [] };
+      }
+      return output;
+    } catch (error) {
+      console.error('Genkit prompt error in conversationalProductSearchFlow:', error);
+      return { refinedQuery: input.query, productSuggestions: [] };
     }
-    return output;
   }
 );

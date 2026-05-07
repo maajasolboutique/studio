@@ -33,7 +33,13 @@ export type RecommendProductDetailsOutput = z.infer<typeof RecommendProductDetai
 
 // Exported wrapper function
 export async function recommendProductDetails(input: RecommendProductDetailsInput): Promise<RecommendProductDetailsOutput> {
-  return recommendProductDetailsFlow(input);
+  try {
+    return await recommendProductDetailsFlow(input);
+  } catch (error) {
+    // Return empty recommendations on AI failure to prevent UI crash
+    console.error('AI Recommendation failed (falling back):', error);
+    return { recommendations: [] };
+  }
 }
 
 // Prompt definition
@@ -61,7 +67,12 @@ const recommendProductDetailsFlow = ai.defineFlow(
     outputSchema: RecommendProductDetailsOutputSchema,
   },
   async (input) => {
-    const {output} = await recommendProductDetailsPrompt(input);
-    return output!;
+    try {
+      const {output} = await recommendProductDetailsPrompt(input);
+      return output || { recommendations: [] };
+    } catch (error) {
+      console.error('Genkit prompt error in recommendProductDetailsFlow:', error);
+      return { recommendations: [] };
+    }
   }
 );
